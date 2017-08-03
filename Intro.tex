@@ -3,10 +3,25 @@
 There are several unique aspects of testing numerical applications used in high performance computing.
 Since an important goal is performance, programmers will often try new things for high performance.
 They may enable a new compiler optimization, replace a library with an optimized version, try a different algorithm, use OpenMP or OpenACC to run loops in parallel, retarget key loops to run on an accelerator such as a GPU, or test a CPU from a different vendor.
-In each of these, it's important to test both whether the performance improves and whether the results are the identical or are only different within acceptable tolerances.
+In each case, it's important to test both whether the performance improves and whether the results are the identical or differ only within acceptable tolerances.
 If there are differences, it is important to be identify where the computations start to diverge.
-We describe compiler and runtime support to help users automate this testing.
+
+We have developed compiler and runtime support to help users automate this testing.
 In the most general approach, using API calls or compiler directives, we describe a scheme to save a sequence of intermediate results from a known correct run.
 In subsequent test runs, the same API calls or directives are used to compare the running program against the \emph{golden results} previously saved.
-In 
+The comparisons are type-specific and can allow for different kinds of tolerances.
+When there are unacceptable differences, the user can select the desired behavior, which can range from returning the number of differences to the running program to printing the detail of each of the differences.
+The user can also select how to proceed, which can be to stop the program at the first difference or after $n$ differences, or to replace the bad results with the known good result and continue, hoping to find multiple errors in a single run.
+
+The general case requires running the program at least twice, once to collect the \emph{golden results} and a second time (or more times) to compare to different test cases.
+We have developed support for the special case of an OpenACC program that targets GPUs for parallel execution.
+When debugging OpenACC programs on a GPU, it can be a challenge to determine at what point the results start to go bad.
+The problem may be as benign as different accumulation order of parallel reductions, or may be working with stale data on the device due to missing data \emph{update} operations.
+This new feature will run the parallel kernels on the CPU as well as on the GPU in a single run, and then compares the results.
+Otherwise, the same features are available, including tolerances, the behavior and how to proceed, as the general case.
+
+The next section describes the numerical application testing problem and the usage cases we intend to support.
+Section 3 describes the details of how to use this in our compiler, and some of the implementation details.
+Section 4 describes the OpenACC autocompare feature, including how to use it and other details.
+Section 5 gives measurements of the overhead of both the general compare and the OpenACC autocompare feature.
 
