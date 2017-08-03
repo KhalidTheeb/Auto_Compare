@@ -10,7 +10,7 @@
 
 \begin{document}
 
-\title{Compiler Approach for Correctness Assurance of High Performance Computing Applications}
+\title{Compiler Support for Testing Numerical HPC Applications}
 %
 \titlerunning{Hamiltonian Mechanics}  % abbreviated title (for running head)
 %                                     also used for the TOC unless
@@ -32,17 +32,21 @@ PGI Compilers and tools; an NVIDIA brand, Portland, OR, USA}
 \maketitle              % typeset the title of the contribution
 
 \begin{abstract}
-The abstract should summarize the contents of the paper
-using at least 70 and at most 150 words. It will be set in 9-point
-font size and be inset 1.0 cm from the right and left margins.
-There will be two blank lines before and after the Abstract. \dots
-\keywords{computational geometry, graph theory, Hamilton cycles}
+We describe compiler and runtime support to help users automate testing high performance numerical programs.
+In the most general approach, the programmer adds API calls or compiler directives to the program where intermediate results should be saved or compared.
+Starting with a known correct program, a sequence of intermediate \emph{golden results} will be saved to a file.
+In subsequent test runs, the same API calls or directives are used to compare the intermediate results in the running program against the \emph{golden results} previously saved.
+We also describe the special case of an OpenACC program targeting GPUs, where the existing data directives and clauses are used to control the compare.
+The compiler generates code to run each computational kernel on both the host and the GPU, and compares the results after each kernel execution.
+
+\dots
+\keywords{Program testing}
 \end{abstract}
 %
 
 
 
-\section{Introduction}
+\input{Intro}
 %
 
 

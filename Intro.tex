@@ -1,0 +1,12 @@
+\section{Introduction}
+
+There are several unique aspects of testing numerical applications used in high performance computing.
+Since an important goal is performance, programmers will often try new things for high performance.
+They may enable a new compiler optimization, replace a library with an optimized version, try a different algorithm, use OpenMP or OpenACC to run loops in parallel, retarget key loops to run on an accelerator such as a GPU, or test a CPU from a different vendor.
+In each of these, it's important to test both whether the performance improves and whether the results are the identical or are only different within acceptable tolerances.
+If there are differences, it is important to be identify where the computations start to diverge.
+We describe compiler and runtime support to help users automate this testing.
+In the most general approach, using API calls or compiler directives, we describe a scheme to save a sequence of intermediate results from a known correct run.
+In subsequent test runs, the same API calls or directives are used to compare the running program against the \emph{golden results} previously saved.
+In 
+
