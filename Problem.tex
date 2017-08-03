@@ -1,0 +1,31 @@
+\section{Testing Numerical Applications}
+
+The general problem is to test whether changes to a numerical application generate different answers.
+Since these are typically floating point applications, the meaning of \emph{different} depends on the datatypes being used and the accuracy being tested.
+Until the universal adoption of IEEE floating point arithmetic\cite{goldberg.cs.91}, different vendors had very different floating point representations and rounding rules.
+With the same floating point representation, many programmers now expect that moving a program to another computer should produce exactly the same answer.
+However, different compilers and libraries (even on the same processor) can give different results, for many well-known reasons:
+\begin{itemize}
+\item Different optimizations (changing a/5.0 into a*0.2, or using fused multiply-add instructions in different places)
+\item Different transcendentals (different implementations of exp, sin, sqrt)
+\item For parallel programs, different order of operations, specifically for reductions (sums).
+\end{itemize}
+A good testing scheme must test for significant different, but allow for insignificant differences, as long as the final result is itself correct.
+
+The test should find whether there are errors, but also identify where the errors are introduced.
+Thus, the testing process should compare intermediate results as well as the final result.
+The testing procedure also should test that the version of the program being tested is following the same sequence of steps as the original program.
+If an intermediate condition goes down a different path, that should be considered an error.
+
+There are testing scenarios that we do not consider here.
+For instance, a programmer may want to test whether the program would still be correct in lower precision, or whether parts of the program could use lower precision, to save on memory or time.
+We are specifically concerned about cases where a given program is being parallelized, ported, or modified, and the user wants to know that the answers will be preserved.
+
+Finally, there is the problem of what to do when an error is found.
+It could be treated the same as a floating point exception, giving an error message and terminating the program.
+If the program starts taking a different execution path, there is no way to continue to test for errors, so termination is probably the only option.
+If the error is some value out of tolerance, another option is to continue, to perhaps identify sources of errors.
+One way to do this is to continue until the number of errors reaches an error limit.
+Another way is to replace the erroneous values with the known correct values, which would have the advantage of knowing that subsequent errors don't arise from the errors already noted and corrected.
+
+
