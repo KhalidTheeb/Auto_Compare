@@ -8,11 +8,24 @@
 %
 \documentclass{llncs}
 
+% define tabs for otabbing region
+\newcommand{\otabs}{\hspace*{8mm}\=\hspace*{8mm}\=\hspace{8mm}\=}
+% otabbing for creating examples
+\newenvironment{otabbing}[1][\otabs]
+	{\begin{tabbing}#1\kill}
+	{\end{tabbing}}
+% typewriter font bold, like textbt, but with the C '#' before pragma
+\newcommand{\textct}[1]{\texttt{\textbf{\#\detokenize{#1}}}}
+% typewriter font bold after detokenizing, so we can use underscores
+\newcommand{\textbt}[1]{\texttt{\textbf{\detokenize{#1}}}}
+% typewriter font bold without detokenizing, so we can use \{ and \}
+\newcommand{\textat}[1]{\texttt{\textbf{#1}}}
+
 \begin{document}
 
 \title{Compiler Support for Testing Numerical HPC Applications}
 %
-\titlerunning{Hamiltonian Mechanics}  % abbreviated title (for running head)
+\titlerunning{Testing Numerical HPC Applications}  % abbreviated title (for running head)
 %                                     also used for the TOC unless
 %                                     \toctitle is used
 %
@@ -21,13 +34,13 @@
 \authorrunning{Khalid Ahmad et al.} % abbreviated author list (for running head)
 %
 %%%% list of authors for the TOC (use if author list has to be modified)
-\tocauthor{Khalid Ahmad, Roger Temam}
+\tocauthor{Khalid Ahmad, Michael Wolfe}
 %
 \institute{University of Utah,
-, Salt Lake City, Utah, USA\\
+, Salt Lake City, UT, USA\\
 \email{Khalid@cs.utah.edu}
 \and
-PGI Compilers and tools; an NVIDIA brand, Portland, OR, USA}
+NVIDIA/PGI, Beaverton, OR, USA}
 
 \maketitle              % typeset the title of the contribution
 
@@ -48,6 +61,8 @@ The compiler generates code to run each computational kernel on both the host an
 
 \input{Intro}
 \input{Problem}
+\input{Golden}
+\input{Auto}
 %
 
 

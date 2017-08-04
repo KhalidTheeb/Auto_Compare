@@ -17,10 +17,6 @@ Thus, the testing process should compare intermediate results as well as the fin
 The testing procedure also should test that the version of the program being tested is following the same sequence of steps as the original program.
 If an intermediate condition goes down a different path, that should be considered an error.
 
-There are testing scenarios that we do not consider here.
-For instance, a programmer may want to test whether the program would still be correct in lower precision, or whether parts of the program could use lower precision, to save on memory or time.
-We are specifically concerned about cases where a given program is being parallelized, ported, or modified, and the user wants to know that the answers will be preserved.
-
 Finally, there is the problem of what to do when an error is found.
 It could be treated the same as a floating point exception, giving an error message and terminating the program.
 If the program starts taking a different execution path, there is no way to continue to test for errors, so termination is probably the only option.
@@ -28,4 +24,14 @@ If the error is some value out of tolerance, another option is to continue, to p
 One way to do this is to continue until the number of errors reaches an error limit.
 Another way is to replace the erroneous values with the known correct values, which would have the advantage of knowing that subsequent errors don't arise from the errors already noted and corrected.
 
+Our mechanism is intended to support numerical applications which compute a number of intermediate values that should be tested for correctness.
+This may be intermediate values in a time-step loop, for instance.
+When creating the \emph{golden results} file, the mechanism will save identifying information, such as file and function name, line number, variable name, its datatype, the number of values and the values themselves.
+When comparing test results against the \emph{golden results} file, the mechanism compares that the program is following the same sequence of steps, and that the values lie within the tolerance.
+The user can control a global tolerance, and can override the tolerance for each set of values tested.
+The user can also control how much output to generate, and how to proceed after an error is found.
+
+There are testing scenarios that we do not consider here.
+For instance, a programmer may want to test whether the program would still be correct in lower precision, or whether parts of the program could use lower precision, to save on memory or time.
+We are specifically concerned about cases where a given program is being parallelized, ported, or modified, and the user wants to know that the answers will be preserved.
 
