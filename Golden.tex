@@ -32,10 +32,10 @@ In Fortran, the user can insert
 \>\textbt{call pgi_compare(a, n, "real")} \\
 \>\textbt{call pgi_compare(b, 20000, "doubleprecision")}
 \end{otabbing}
-In C++ or C, the user would insert the function:
+In C++ or C, the user would insert the function call:
 \begin{otabbing}
-\>\textbt{call pgi_compare(x, 1, "float")} \\
-\>\textbt{call pgi_compare(a, n, "double")}
+\>\textbt{pgi_compare(x, 1, "float",__FILE__,__LINE__)} \\
+\>\textbt{pgi_compare(a, n, "double",__FILE__,__LINE__)}
 \end{otabbing}
 This method requires the user to specify the datatype in a string, and won't get the other identifying information automatically, but the compare procedure is otherwise identical.
 This method also loses the ability to specify different tolerances and behavior for different arrays.
@@ -43,7 +43,7 @@ This method also loses the ability to specify different tolerances and behavior 
 Whether using directives or API calls, the program will invoke the runtime routine that saves the values to a \emph{golden results} file, or compares the values to that file.
 The runtime routine will test the program sequence by comparing \ldots SOMETHING HERE ABOUT PROGRAM SEQUENCE .
 The behavior of the runtime routine is controlled by the directive clauses and by the \textbt{PGI_COMPARE} environment variable.
-\textbt{PGI_COMPARE} must have a sequence of comma-separated options, and must specify at least either \textbt{create} (to create the \emph{golden results} file) or \textbt{compare}.
+\textbt{PGI_COMPARE} must have a sequence of comma-separated options, and must specify at least either \textbt{CREATE} (to create the \emph{golden results} file) or \textbt{COMPARE}.
 Other options are listed in the table in Table~\ref{env}.
 \begin{table}
 \begin{center}
@@ -53,18 +53,18 @@ option & Description \\
 % \multicolumn{1}{l}{\rule{0pt}{12pt} \textbt{export PGICOMPARE=option[,option]}
 % }&\multicolumn{1}{l}{  Description }\\[2pt]
 \hline
-\textbt{file=}\textit{filename} & Name of \emph{golden results} file \\
-\textbt{create}   &   This run creates the \emph{golden results} file \\
-\textbt{compare}   &   Compare this run to the \emph{golden results} file \\
-\textbt{tolabs=}\textit{r} & Use \textit{r} as an absolute tolerance \\
-\textbt{tolrel=}\textit{r} & Use \textit{r} as a relative tolerance \\
-\textbt{tolulp=}\textit{n} & Allow \textit{n} differences in ULP \\
-\textbt{tolieee} & Test IEEE NaNs\\
-\textbt{report=}\textit{n} & Report first \textit{n} differences \\
-\textbt{skip=}\textit{n}    & Skip the first \textit{n} differences \\
-\textbt{verbose}   & Outputs all details of comparison \\
-\textbt{patch}   &   Patch errorneous values with correct values \\
-\textbt{stop}   &   Stop at first difference \\
+\textbt{FILE=}\textit{filename} & Name of \emph{golden results} file \\
+\textbt{CREATE}   &   This run creates the \emph{golden results} file \\
+\textbt{COMPARE}   &   Compare this run to the \emph{golden results} file \\
+\textbt{ABS=}\textit{r} & Use \textit{r} as an absolute tolerance \\
+\textbt{REL=}\textit{r} & Use \textit{r} as a relative tolerance \\
+\textbt{ULP=}\textit{n} & Allow \textit{n} differences in ULP \\
+\textbt{IEEE} & Test IEEE NaNs\\
+\textbt{REPORT=}\textit{n} & Report first \textit{n} differences \\
+\textbt{SKIP=}\textit{n}    & Skip the first \textit{n} differences \\
+\textbt{VERBOSE}   & Outputs all details of comparison \\
+\textbt{PATCH}   &   Patch errorneous values with correct values \\
+\textbt{STOP}   &   Stop at first difference \\
 \hline
 \end{tabular}
 \end{center}
