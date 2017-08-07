@@ -63,29 +63,31 @@ The compiler generates code to run each computational kernel on both the host an
 \input{Problem}
 \input{Golden}
 \input{Auto}
+\input{Experiments}
+\input{Conclusion}
 %
 
 
 \section{Obstacles for Unit Tests in HPC}
 
 \section {What Problems are addressed}
-\subsection{comparing results between a known good version (golden) and a version being tested}
-  - deciding what values to save / compare
-  - deciding when to save / compare values
-  - deciding how to do the compare, esp. for floating point
-\subsection{Usage Scenarios}
-  - user driven, save golden values to a file, compare test version against those
-    using API calls or directives
-    user decides what values to save/compare, when to compare
-  - automatic online compare, compare CPU vs GPU computations
-    can either compare after each kernel launch, or
-    compare all values present on device against golden host values
+%\subsection{comparing results between a known good version (golden) and a version being tested}
+%  - deciding what values to save / compare
+%  - deciding when to save / compare values
+%  - deciding how to do the compare, esp. for floating point
+%\subsection{Usage Scenarios}
+%  - user driven, save golden values to a file, compare test version against those
+%    using API calls or directives
+%    user decides what values to save/compare, when to compare
+%  - automatic online compare, compare CPU vs GPU computations
+%    can either compare after each kernel launch, or
+%    compare all values present on device against golden host values
 
-\section{Implementation Details}
-   compare options - tolerance, IEEE comparisons
-   where in the runtime it is implemented (?)
-   challenges: Fortran vs C, gcc-specific header file functionality
-   saving a golden file, file block headers to compare execution sequence
+%\section{Implementation Details}
+%   compare options - tolerance, IEEE comparisons
+%   where in the runtime it is implemented (?)
+%   challenges: Fortran vs C, gcc-specific header file functionality
+%   saving a golden file, file block headers to compare execution sequence
 
 \section{Experimentation}
    cost overhead of compare
