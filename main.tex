@@ -81,7 +81,6 @@ The compiler generates code to run each computational kernel on both the host an
     can either compare after each kernel launch, or
     compare all values present on device against golden host values
 
-
 \section{Implementation Details}
    compare options - tolerance, IEEE comparisons
    where in the runtime it is implemented (?)
@@ -97,38 +96,6 @@ The compiler generates code to run each computational kernel on both the host an
    compare different algorithms
    compare compiler optimizations
    compare different hosts
-
-
-
-\begin{figure}
-\vspace{2.5cm}
-\caption{This is the caption of the figure displaying a white eagle and
-a white horse on a snow field}
-\end{figure}
-
-
-\begin{table}
-\caption{Environment Variables }
-\begin{center}
-\begin{tabular}{r@{\quad}ll}
-\hline
-\multicolumn{1}{l}{\rule{0pt}{12pt} export\_PGICOMPARE = […, …, …] 
-}&\multicolumn{2}{l}{  Description }\\[2pt]
-\hline\rule{0pt}{12pt}
-FILE= & Name of data file & \\
-CREATE   &   Specifies that this is the run that will produce the reference results& \\
-COMPARE   &   Specifies that the current run will be compared with a reference file& \\
-VERBOSE   & Outputs all details of comparison& \\
-PATCH   &   Patch with correct values& \\
-STOP   &   Stop at first difference & \\
-SKIP=    & Skip differences or don’t compare variable & \\
-REPORT=    & Report first differences & \\
-TOL [ABS, REL, ULP, IEEE]  & Specifies the desired tolerance type &\\[2pt]
-\hline
-\end{tabular}
-\end{center}
-\end{table}
-
 
 \bibliographystyle{IEEEtran}
 \bibliography{main}
