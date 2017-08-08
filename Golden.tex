@@ -1,7 +1,7 @@
 \section{Usage and Implementation}
 
-Our compiler supports two ways to use the general compare feature, with runtime API calls or with compiler directives.
-The directives simplify the usage quite a bit, since the compiler knows things like the datatype, file and function names, and line number, and can pass these to the compare routines automatically.
+Our compiler supports two ways to use the \emph{golden compare} feature, with runtime API calls or with compiler directives.
+The directives simplify the usage quite a bit, since the compiler knows things like the datatype, file and function names, and line number, and can pass this information to the compare routines automatically.
 In either case, the user introduces API calls or compiler directives at the points in the program where intermediate or final results should be compared.
 The directives must be enabled with a command line flag, and will be ignored by other compilers.
 This allows a user to leave the directives in place, making their insertion part of the continuing maintenance procedure.
@@ -26,7 +26,7 @@ The compiler will interpret the directives, essentially replacing them with runt
 There are additional clauses that can appear on the directive, to specify the tolerance to use and how to proceed in case of an error.
 The directives are enabled with the \textbt{-Mcompare} compiler flag.
 
-The alternative is to use runtime calls.
+The alternative is to use runtime API calls.
 In Fortran, the user can insert
 \begin{otabbing}
 \>\textbt{call pgi_compare(a, n, "real")} \\
@@ -41,8 +41,8 @@ This method requires the user to specify the datatype in a string, and won't get
 This method also loses the ability to specify different tolerances and behavior for different arrays.
 
 Whether using directives or API calls, the program will invoke the runtime routine that saves the values to a \emph{golden results} file, or compares the values to that file.
-The runtime routine will test the program sequence by comparing \ldots SOMETHING HERE ABOUT PROGRAM SEQUENCE .
-The behavior of the runtime routine is controlled by the directive clauses and by the \textbt{PGI_COMPARE} environment variable.
+In the test run, the runtime routine will validate the program sequence by checking that any available filename and line number information matches, as well as that the saved data sequence matches in datatype and number of values.
+The compare operation is controlled by the directive clauses and by the \textbt{PGI_COMPARE} environment variable.
 \textbt{PGI_COMPARE} must have a sequence of comma-separated options, and must specify at least either \textbt{CREATE} (to create the \emph{golden results} file) or \textbt{COMPARE}.
 Other options are listed in the table in Table~\ref{env}.
 \begin{table}
@@ -63,7 +63,7 @@ option & Description \\
 \textbt{REPORT=}\textit{n} & Report first \textit{n} differences \\
 \textbt{SKIP=}\textit{n}    & Skip the first \textit{n} differences \\
 \textbt{VERBOSE}   & Outputs all details of comparison \\
-\textbt{PATCH}   &   Patch errorneous values with correct values \\
+\textbt{PATCH}   &   Patch erroneous values with correct values \\
 \textbt{STOP}   &   Stop at first difference \\
 \hline
 \end{tabular}
@@ -78,4 +78,4 @@ If no tolerance is specified, the tolerance is zero.
 If any tolerance is exceeded, then the comparison fails.
 If the test value is a \emph{NaN} but does not match the golden value, the comparison fails as well.
 This comparison scheme was copied from what we use in our nightly and weekly quality assurance tests, where we run over 1,000,000 tests every weekend, plus more during shorter nightly runs.
-If a comparison fails, the program can ignore some number of errors or report on them, then either stop, continue execution, or patch the errors and then continue.
+If a comparison fails, the program can ignore some number of errors or report on them, then either stop, continue execution, or patch the bad errors and then continue.

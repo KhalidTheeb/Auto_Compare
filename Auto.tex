@@ -6,7 +6,11 @@ The important advantage is that we have two processors, so we can create the gol
 Many of the problems that arise when programming GPUs with OpenACC have to do with managing the separate memories (stale data on the GPU or the CPU), or dealing with all the problems of porting to a new processor while part of the program is still running on the old processor.
 
 OpenACC programs have directives to tell the compiler what loops to run in parallel on the GPU (\emph{compute regions}), and what data to copy to the device and when to update data between device and host (\emph{data constructs}).
-Our \emph{autocompare} feature uses these directives to 
+Our \emph{OpenACC autocompare} feature uses these directives, and a runtime table that keeps track of the correspondence between host and device data, to select what data to compare.
 
 
-\textbt{not perfect, the compare point is a sync point, so this won't help find async errors}
+
+
+\textbf{not perfect, the compare point is a sync point, so this won't help find async errors}
+
+\textbf{Needs more text here...but we need more experience as well}

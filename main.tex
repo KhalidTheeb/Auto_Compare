@@ -45,14 +45,12 @@ NVIDIA/PGI, Beaverton, OR, USA}
 \maketitle              % typeset the title of the contribution
 
 \begin{abstract}
-We describe PAST (Program Assisted Software Testing), which provides compiler and runtime support to help users automate testing high performance numerical programs.
+We describe PAST (Program Assisted Software Testing), a feature in our compiler and runtime to help users automate testing high performance numerical programs.
 In the most general approach, the programmer adds PAST API calls or compiler directives to the program where intermediate results should be saved or compared.
 Starting with a known correct program, a sequence of intermediate \emph{golden results} will be saved to a file.
 In subsequent test runs, the same PAST API calls or directives are used to compare the intermediate results in the running program against the \emph{golden results} previously saved.
-We also describe the special case of an OpenACC program targeting GPUs, where the existing data directives and clauses are used to control the compare.
-The compiler generates code to run each computational kernel on both the host and the GPU, and the runtime compares the results after each kernel execution.
+We also describe the special case of testing an OpenACC program targeting GPUs, where the compiler generates code to run each computational kernel on both the host and the GPU, and existing data directives and clauses are used to control the compare operation after each kernel execution.
 
-\dots
 \keywords{Program testing}
 \end{abstract}
 %
