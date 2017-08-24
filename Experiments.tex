@@ -20,6 +20,28 @@ The values shown are:
 \item Size of the \emph{golden results} file (bytes).
 \end{itemize}
 
+\begin{table}
+\begin{center}
+\begin{tabular}{lll}
+\hline
+Operation/Data Size & 303.ostencil & 357.csp\\
+\hline
+\textbt{Binary file size (bytes)} & 80,099 & 418,481\\
+\textbt{Write data with reporting}   &   0.0 & 0.0\\
+\textbt{Reading and comparing with reporting}   &   0.0 & 0.04\\
+\textbt{Compare with report} & 0.0 &0.04\\
+\textbt{Write data without reporting} & 0.0 & 0.0\\
+\textbt{Reading and comparing without reporting} & 0.0 & 0.0\\
+\textbt{Compare without report} & 0.0& 0.0\\
+\hline
+\end{tabular}
+\end{center}
+\caption{Options that can appear in the \textbt{PGI_COMPARE} environment variable.}
+\label{res1}
+\end{table}
+
+
+
 For the OpenACC autocompare feature, we ran the same set of programs, comparing the time of the combined \emph{test} run against both the original program on a CPU, and the original program on the same GPU.
 The values shown are:
 \begin{itemize}
