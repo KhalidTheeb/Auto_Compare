@@ -1,0 +1,40 @@
+\section{Usage and Implementation}
+
+Our compiler supports two ways to use CAST, with runtime calls or with compiler directives.
+The directives simplify the usage quite a bit, since the compiler knows things like the datatype, file and function names, and line number, and can pass this information to the compare routines automatically.
+In either case, the user introduces runtime calls or compiler directives at the points in the program where intermediate or final results should be compared.
+The directives must be enabled with a command line flag, and will be ignored by other compilers.
+This allows a user to leave the directives in place, making their insertion part of the continuing maintenance procedure.
+The runtime calls can be placed in conditionally compiled regions, or will have to be isolated in a testing harness, or removed before releasing the software.
+
+The directives use Fortran array notation or the same C array section notation familiar to OpenACC and OpenMP users.
+In Fortran, the user can insert a directive like:
+\begin{otabbing}
+\>\textbt{!$pgi compare(a(:),b(1:100,2:20))}
+\end{otabbing}
+In C++ or C, the user can insert a pragma like:
+\begin{otabbing}
+\>\textct{pragma pgi compare(x,a[0:n])}
+\end{otabbing}
+If \textbt{x} is a scalar, a fixed-size array or C VLA, the compiler knows its size; the user must use array section notation to tell the compiler the size of dynamically allocated arrays.
+The compiler will interpret the directives, essentially replacing them with runtime calls that handle each array, implicitly including the filename, function name, line number, variable or array name, and datatype information, for more precise error reporting.
+There are additional clauses that can appear on the directive, to specify the tolerance to use and how to proceed in case of an error.
+The directives are enabled with a compiler flag.
+
+The alternative is to use runtime calls.
+In Fortran, the user can insert
+\begin{otabbing}
+\>\textbt{call pgi_compare(a, 'real', n, 'a', 1)}
+\end{otabbing}
+In C++ or C, the user can insert the function call:
+\begin{otabbing}
+\>\textbt{pgi_compare(a, "float", n, "a", 2)}
+\end{otabbing}
+The programmer specifies start address, the datatype, and the number of elements;
+the last two arguments (a string and integer) are used to identify the location where an unacceptable difference occurs.
+The compare procedure is the same using either directives or runtime calls.
+
+Whether using directives or runtime calls, the program will save the values to a reference file, or compare the values to those saved in that file.
+In the test run, the runtime routine will validate the program sequence by checking that any available location identification information matches, as well as that the saved data sequence matches in datatype and number of values.
+Tolerances and other compare options are controlled by directive clauses and by the \textbt{PGI_COMPARE} environment variable (described fully in the paper or presentation).
+If a comparison fails, the program can ignore some number of errors or report on them, then either stop, continue execution, or patch the bad results and then continue.

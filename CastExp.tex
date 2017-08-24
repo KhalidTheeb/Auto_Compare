@@ -1,0 +1,55 @@
+\section{Experiments}
+
+We have measured the overhead of our compare feature to demonstrate its usability.
+For the general case, we measure the overhead of the first run, where data values are written to a file, and the test run, where values are compared to the \emph{golden results} file, in both cases measuring execution time compared to the run with no compare overhead.
+For the OpenACC autocompare feature, we measure the overhead of the autocompare against the time with no compare overhead.
+With OpenACC autocompare, the main overhead is running the program on the CPU as well as the GPU.
+
+
+We have run our overhead experiments on three of the SPEC ACCEL v1.2 benchmarks.
+In each case, the program has an outer time step loop containing the main computation.
+For the general compare feature, we inserted a call or calls to \textbt{pgi_compare} inside the loop, to save and compare the state after each time step.
+We used the \emph{ref} data set in each case.
+We ran the \emph{golden} run on an Intel machine, and \emph{test} runs on the same machine as well as on an IBM POWER 8 machine.
+The values shown are:
+\begin{itemize}
+\item Time (seconds) to run the original program on each machine.
+\item Time and overhead (percent slowdown) to run the \emph{golden} run on the Intel machine.
+\item Time and overhead to run the \emph{test} run on the each machine.
+\item Number of calls to \textbt{pgi_compare}.
+\item Size of the \emph{golden results} file (bytes).
+\end{itemize}
+
+\begin{table}
+\begin{center}
+\begin{tabular}{lll}
+\hline
+Operation/Data Size & 303.ostencil & 357.csp\\
+\hline
+\textbt{Binary file size (bytes)} & 80,099 & 418,481\\
+\textbt{Write data with reporting}   &   0.0 & 0.0\\
+\textbt{Reading and comparing with reporting}   &   0.0 & 0.04\\
+\textbt{Compare with report} & 0.0 &0.04\\
+\textbt{Write data without reporting} & 0.0 & 0.0\\
+\textbt{Reading and comparing without reporting} & 0.0 & 0.0\\
+\textbt{Compare without report} & 0.0& 0.0\\
+\hline
+\end{tabular}
+\end{center}
+\caption{The overhead time incurred due to using pgi-compare on two Spec accel applications }
+\label{res1}
+\end{table}
+
+
+
+For the OpenACC autocompare feature, we ran the same set of programs, comparing the time of the combined \emph{test} run against both the original program on a CPU, and the original program on the same GPU.
+The values shown are:
+\begin{itemize}
+\item Time (seconds) to run the original program on the CPU.
+\item Time to run the original program on the GPU.
+\item Time to run combined \emph{test} program, and overhead relative to both the CPU and GPU runs.
+\item Number of data variables compared.
+\item Bytes of data compared.
+\end{itemize}
+
+\textbf{Conclusions about the overheads!}

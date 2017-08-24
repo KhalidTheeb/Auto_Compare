@@ -1,0 +1,102 @@
+% This is based on the LLNCS.DEM the demonstration file of
+% the LaTeX macro package from Springer-Verlag
+% for Lecture Notes in Computer Science,
+% version 2.4 for LaTeX2e as of 16. April 2010
+%
+% See http://www.springer.com/computer/lncs/lncs+authors?SGWID=0-40209-0-0-0
+% for the full guidelines.
+%
+\documentclass{llncs}
+
+% define tabs for otabbing region
+\newcommand{\otabs}{\hspace*{8mm}\=\hspace*{8mm}\=\hspace{8mm}\=}
+% otabbing for creating examples
+\newenvironment{otabbing}[1][\otabs]
+	{\begin{tabbing}#1\kill}
+	{\end{tabbing}}
+% typewriter font bold, like textbt, but with the C '#' before pragma
+\newcommand{\textct}[1]{\texttt{\textbf{\#\detokenize{#1}}}}
+% typewriter font bold after detokenizing, so we can use underscores
+\newcommand{\textbt}[1]{\texttt{\textbf{\detokenize{#1}}}}
+% typewriter font bold without detokenizing, so we can use \{ and \}
+\newcommand{\textat}[1]{\texttt{\textbf{#1}}}
+
+\begin{document}
+
+\title{Compiler Support for Testing Numerical HPC Applications}
+%
+\titlerunning{Testing Numerical HPC Applications}  % abbreviated title (for running head)
+%                                     also used for the TOC unless
+%                                     \toctitle is used
+%
+\author{Khalid Ahmad\inst{1} \and Michael Wolfe\inst{2}}
+%
+\authorrunning{Khalid Ahmad et al.} % abbreviated author list (for running head)
+%
+%%%% list of authors for the TOC (use if author list has to be modified)
+\tocauthor{Khalid Ahmad, Michael Wolfe}
+%
+\institute{University of Utah,
+Salt Lake City, UT, USA\\
+\email{Khalid@cs.utah.edu}
+\and
+NVIDIA/PGI, Beaverton, OR, USA}
+
+\maketitle              % typeset the title of the contribution
+
+\begin{abstract}
+We describe CAST (Compiler-Assisted Software Testing), a feature in our compiler and runtime to help users automate testing high performance numerical programs.
+The programmer adds CAST runtime calls or compiler directives to the program where intermediate results should be saved or compared.
+Starting with a known correct program, a sequence of intermediate reference results will be saved to a file.
+In subsequent test runs, the same CAST runtime calls or directives are used to compare the intermediate results in the running program against the reference results previously saved.
+\keywords{Program testing}
+\end{abstract}
+%
+
+
+
+\input{CastIntro}
+\input{CastProblem}
+\input{CastUsage}
+\input{CastExp}
+\input{Conclusion}
+%
+
+
+%\section{Obstacles for Unit Tests in HPC}
+
+%\section {What Problems are addressed}
+%\subsection{comparing results between a known good version (golden) and a version being tested}
+%  - deciding what values to save / compare
+%  - deciding when to save / compare values
+%  - deciding how to do the compare, esp. for floating point
+%\subsection{Usage Scenarios}
+%  - user driven, save golden values to a file, compare test version against those
+%    using API calls or directives
+%    user decides what values to save/compare, when to compare
+%  - automatic online compare, compare CPU vs GPU computations
+%    can either compare after each kernel launch, or
+%    compare all values present on device against golden host values
+
+%\section{Implementation Details}
+%   compare options - tolerance, IEEE comparisons
+%   where in the runtime it is implemented (?)
+%   challenges: Fortran vs C, gcc-specific header file functionality
+%   saving a golden file, file block headers to compare execution sequence
+
+%\section{Experimentation}
+%   cost overhead of compare
+%   cost overhead of autocompare
+%   what kinds of differences we find
+%
+%\section{Other Uses of a Compare Feature}
+%   compare different algorithms
+%   compare compiler optimizations
+%   compare different hosts
+
+\bibliographystyle{IEEEtran}
+\bibliography{main}
+
+
+
+\end{document}

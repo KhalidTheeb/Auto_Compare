@@ -1,0 +1,25 @@
+\section{Experiments}
+
+For this short abstract, we include one example of the type of information we are collecting.
+Here we ran the SPECAccel 303.ostencil benchmark (a 7-point stencil code) with the \emph{test} dataset on a 6-core Haswell (Intel i7-5820K) Linux workstation three times.
+The program was compiled for parallel execution using the \emph{-ta=multicore} option, with the PGI 17.7 compiler, enhanced with the CAST runtime.
+The times here are SPEC \emph{estimates} (not run in the SPEC harness).
+We first measured the original parallel execution time.
+Then we modified the program to add a \textbt{pgi_compare} call inside the iteration loop to save or compare the main data structure, and reran the program in reference mode (to save the reference values) and test mode (to comapre against the saved reference values).
+Table~\ref{exp1} show the times in seconds, as well as the number of \textbt{pgi_compare} calls, the number of values compared and the size of the reference file.
+\begin{table}
+\begin{center}
+\begin{tabular}{ll}
+\hline
+original time & 2.51 seconds \\
+reference time & 88.18 seconds \\
+test time & 123.92 seconds \\
+\textbt{pgi_compare} calls & 101 \\
+values compared & 1,694,498,816 \\
+bytes saved & 6,777,999,906
+\end{tabular}
+\end{center}
+\caption{Overhead of CAST for 303.ostencil benchmark}
+\label{exp1}
+\end{table}
+Clearly, the overhead is significant, so this must be used judiciously.
