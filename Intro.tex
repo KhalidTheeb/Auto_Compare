@@ -6,7 +6,7 @@ They may enable a new compiler optimization, replace a library with an optimized
 In each case, it's important to test both whether the performance improves and whether the results are the identical or differ only within acceptable tolerances.
 If there are differences, it is important to be identify where the computations start to diverge.
 
-We have developed compiler and runtime support to help users automate this testing, which we call PAST (Program Assisted Software Testing).
+We have developed compiler and runtime support to help users automate this testing, which we call CAST (Compiler Assisted Software Testing).
 In the most general approach, the program saves a sequence of intermediate results from a known correct run in a \emph{golden results} file, using API calls or compiler directives.
 In subsequent test runs, the same API calls or directives compare the running program against the \emph{golden results} previously saved.
 The comparisons are type-specific and can allow for different kinds of tolerances.
@@ -17,11 +17,11 @@ The general case requires running the program at least twice, once to collect th
 We have developed support for the special case of an OpenACC program that targets GPUs for parallel execution.
 When debugging OpenACC programs on a GPU, it can be a challenge to determine at what point the results start to go bad.
 The problem may be as benign as the different accumulation order of parallel reductions, or may be working with stale data on the device due to missing data \emph{update} operations.
-Our PAST implementation can run the parallel kernels on the CPU as well as on the GPU in a single run, and then compares the two results.
+Our CAST implementation can run the parallel kernels on the CPU as well as on the GPU in a single run, and then compares the two results.
 Otherwise, the same features are available, including tolerances, the behavior and how to proceed, as the general case.
 
 The next section describes the numerical application testing problem and the usage cases we intend to support.
-Section 3 describes the details of how to use PAST in our compiler, and some of the implementation details.
+Section 3 describes the details of how to use CAST in our compiler, and some of the implementation details.
 Section 4 describes the OpenACC autocompare feature, including how to use it and other details.
 Section 5 gives measurements of the overhead of both the general compare and the OpenACC autocompare feature.
 
