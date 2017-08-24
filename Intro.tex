@@ -6,22 +6,22 @@ They may enable a new compiler optimization, replace a library with an optimized
 In each case, it's important to test both whether the performance improves and whether the results are the identical or differ only within acceptable tolerances.
 If there are differences, it is important to be identify where the computations start to diverge.
 
-We have developed compiler and runtime support to help users automate this testing, which we call PAST (Program Assisted Software Testing).
-In the most general approach, the program saves a sequence of intermediate results from a known correct run in a \emph{golden results} file, using API calls or compiler directives.
-In subsequent test runs, the same API calls or directives compare the running program against the \emph{golden results} previously saved.
+We have developed compiler and runtime support to help users automate this testing, which we call CAST (Compiler-Assisted Software Testing).
+In the most general approach, the program saves a sequence of intermediate results from a known correct run in a reference file, using runtime calls or compiler directives.
+In subsequent test runs, the same runtime calls or directives compare the running program against the reference results previously saved.
 The comparisons are type-specific and allow for different kinds of tolerances.
 When there are unacceptable differences, the user can select the desired behavior, which can range from returning the number of differences to the running program to printing the detail of each of the differences.
 The user can also select how to proceed, which can be to stop the program at the first difference or after $n$ differences, or to replace the bad results with the known good values and continue, hoping to find multiple errors in a single run.
-This \emph{golden compare} feature requires running the program at least twice, once to collect the \emph{golden results} file and a second time (or more times) to compare to different test cases.
+This reference file feature requires running the program at least twice, once to create the reference file and a second time (or more times) to compare to different test cases.
 
 We have also developed support for the special case of an OpenACC program that targets GPUs for parallel execution.
-When debugging OpenACC programs on a GPU, it can be a challenge to determine at what point the results start to go bad.
+When debugging OpenACC programs on a GPU, it can be especially challenging to determine at what point the results start to go bad, since some of the computation is done on a different machine.
 The problem may be as benign as the different accumulation order of parallel reductions, or may be due to stale data on the device because of missing data \emph{update} operations.
-Our PAST implementation will execute the parallel kernels on the CPU as well as on the GPU in a single run, and then compare the two results.
-This \emph{OpenACC autocompare} has all the same features, including setting tolerances, choosing a behavior and how to proceed, as the \emph{golden compare}.
+Our CAST implementation will execute the parallel kernels on the CPU as well as on the GPU in a single run, and then compare the two results.
+This \emph{OpenACC autocompare} has all the same features, including setting tolerances, choosing a behavior and how to proceed, as the reference file approach.
 
 The next section describes the numerical application testing problem and the usage cases we intend to support.
-Section 3 describes the details of how to use PAST in our compiler, and some of the implementation details.
+Section 3 describes the details of how to use CAST in our compiler, and some of the implementation details.
 Section 4 describes the OpenACC autocompare feature, including how to use it and other details.
 Section 5 gives measurements of the overhead of both the general compare and the OpenACC autocompare feature.
 
