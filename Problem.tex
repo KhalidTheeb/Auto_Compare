@@ -26,8 +26,8 @@ Another way is to replace the erroneous values with the known correct values, wh
 
 Our mechanism is intended to support numerical applications which compute a number of intermediate values that should be tested for correctness.
 These may be intermediate values in a time-step loop, for instance.
-When creating the \emph{golden results} file, PAST will save identifying information, such as file and function name, line number, variable name, its datatype, the number of values and the values themselves.
-When comparing test results against the \emph{golden results} file, PAST tests that the program is following the same sequence of steps, and that the values lie within the tolerance.
+When creating the \emph{golden results} file, CAST will save identifying information, such as file and function name, line number, variable name, its datatype, the number of values and the values themselves.
+When comparing test results against the \emph{golden results} file, CAST tests that the program is following the same sequence of steps, and that the values lie within the tolerance.
 The user can control a global tolerance, and can override the tolerance for each set of values tested.
 The user can also control how much output to generate, and how to proceed after an error is found.
 
