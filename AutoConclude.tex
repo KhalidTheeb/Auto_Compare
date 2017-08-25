@@ -1,0 +1,22 @@
+\section{Conclusion}
+
+The closest prior work to this is the FortranTestGenerator\cite{hovy.iwsehpc.16}, which has some of the same goals.
+The FortranTestGenerator is designed to create test cases for specific procedures (Fortran subroutines) by capturing the inputs to the subroutine and generating a driver that will recreate the state of the program before the procedure and then invoke the procedure.
+As of publication of the article, validation is not yet automated.
+Our design can't be used to create test cases for parts of a program in isolation.
+In contrast, our method can test the state of the data at one point, or in many points throughout the execution of a program.
+
+Our design has four advantages.
+\begin{itemize}
+\item The design requires the user to add runtime API calls or directives only where the data should be saved and compared, minimizing the changes required to the program.
+\item The use of directives allows the compiler to implicitly add more information, such as the datatype of the data to be compared, variable name, function name, and file location.
+The directives can be maintained in the program, only enabling them with a command line option when testing.
+\item The same API calls or directives are used for both the \emph{golden} run, creating the \emph{golden result} file, as for the \emph{test} run, comparing to that file.
+The behavior of the API calls or directives are controlled by a runtime environment variable.
+\item The procedure can find changes in execution paths as well as changes in data.
+\item The OpenACC autocompare allows comparing the GPU code against the CPU code without adding any directives or API calls.
+OpenACC programs typically identify data that is copied to the device memory, allowing the CPU code to generate the \emph{golden} results in system memory while the GPU generates \emph{test} results in device memory.
+At runtime, the data in the two memories is dynamically compared.
+\end{itemize}
+
+With low overhead and flexible compare options, 

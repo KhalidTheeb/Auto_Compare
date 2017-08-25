@@ -1,0 +1,25 @@
+\section{Introduction}
+
+Porting an application to an accelerator, like a GPU, has unique challenges for testing.
+The original goal is to get higher performance, but the programmer must also test that the computed answers are still accurate.
+With an accelerator, some (perhaps most) of the computations are done on a processor with a different instruction set, a different set of floating point units, and different numerical libraries.
+While essentially all processors use the same IEEE floating point representation, not all will support the same features, such as FMA (fused multiple-add) operations.
+It's enough of a problem to test that a port of an application to a new processor is correct, or that enabling a new optimization still produces correct answers, but adding the complexity of using an accelerator for part of the computation exacerbates that even more.
+
+We have developed compiler and runtime support to help users automate testing of numerical applications, which we call CAST (Compiler-Assisted Software Testing).
+In the general case, the user will add CAST runtime calls or directives to the program to save intermediate results from a known correct run in a reference file.
+In subsequent test runs, the same runtime calls or directives will compare the running program against the reference results previously saved.
+
+Here, we describe an \emph{OpenACC autocompare} feature of CAST for the special case of testing an OpenACC program that targets GPU parallel execution.
+The goal is to determine just where the computation starts to go bad.
+A difference may be as benign as the different accumulation order of parallel reductions, or may be due to stale data on the device because of missing data \emph{update} operations.
+Our CAST implementation executes the parallel kernels on the CPU as well as on the GPU in a single run, and then compare the two results.
+The user can set options such as floating point tolerances, choosing what to report and how to proceed if there are differences.
+For instance, the user can choose to stop the program after $n$ differences or to replace the bad results with the known good values and continue.
+
+The next section describes the specific problems of testing application ports to a GPU, and the usage cases that the OpenACC autocompare features is intended to support.
+Section 3 describes the OpenACC autocompare feature in more detail, including how to use it and other details.
+Section 4 gives some details of the implementation.
+Section 5 gives measurements of the overhead of the autocompare feature.
+The final section closes with a description of work in progress.
+

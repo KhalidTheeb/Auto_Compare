@@ -1,0 +1,28 @@
+\section{Testing a GPU Port of a Numerical Application}
+
+The general problem is to test whether porting a numerical application to a GPU generates different answers.
+Since these are typically floating point applications, the meaning of \emph{different} depends on the precision needed.
+Since all processors now use IEEE floating point arithmetic\cite{goldberg.cs.91}, many programmers now expect that moving a program to another processor or to a GPU should produce exactly the same answer.
+However, different compilers and libraries (even on the same processor) can give different results, for many well-known reasons, including:
+\begin{itemize}
+\item Different optimizations (changing a/5.0 into a*0.2, or using fused multiply-add instructions in different places), or
+\item Presence or absence of FMA operations on the host or GPU, or different FMA association on host and GPU ($(a*b)+(c*d)$ treated as $\textit{fma}(a,b,c*d)$ or $\textit{fma}(c,d,a*b)$).
+\item Different transcendentals (different implementations of exp, sin, sqrt), or
+\item Parallel execution on the GPU can result in different order of operations, specifically for reductions (sums).
+\end{itemize}
+A good testing scheme must test for significant differences, but allow for insignificant differences, as long as the final result is accurate.
+
+The test should determine that not only that there are differences, but also identify where the differences are introduced.
+Thus, the testing process should compare intermediate results as well as the final result.
+There is also the problem of what to do when an error is found.
+It could be treated the same as a floating point exception, giving an error message and terminating the program.
+Another option is to report the error and continue, perhaps allowing identification of more errors, with perhaps a limit on the number of errors reported.
+A third option is to replace the erroneous values with the known correct values before continuing.
+
+When debugging OpenACC programs targeting GPUs, we have additional problems as well as an important advantage.
+The problems include using two different processors in the same application, and managing data traffic between the system memory and the GPU device memory.
+The important advantage is that we have two processors, so we can create the reference values on the CPU while the GPU is executing, and we have separate memory for the CPU and GPU, so we have a place to store the reference values and the test values.
+Many of the problems that arise when programming GPUs with OpenACC have to do with managing the separate memories (stale data on the GPU or the CPU), or dealing with all the problems of porting to a new processor while part of the program is still running on the old processor.
+
+OpenACC programs have directives to tell the compiler what loops to run in parallel on the GPU (\emph{compute constructs}), and what data to copy to the device and when to update data between device and host (\emph{data constructs}).
+Our \emph{OpenACC autocompare} feature uses these directives, along with a table in the OpenACC runtime that keeps track of the correspondence between host and device data, to select what data to compare.

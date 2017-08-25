@@ -23,9 +23,9 @@
 
 \begin{document}
 
-\title{Compiler Support for Testing Numerical HPC Applications}
+\title{Automatic Testing of OpenACC Applications}
 %
-\titlerunning{Testing Numerical HPC Applications}  % abbreviated title (for running head)
+\titlerunning{Automatic Testing of OpenACC}  % abbreviated title (for running head)
 %                                     also used for the TOC unless
 %                                     \toctitle is used
 %
@@ -40,29 +40,27 @@
 Salt Lake City, UT, USA\\
 \email{Khalid@cs.utah.edu}
 \and
-NVIDIA/PGI, Beaverton, OR, USA}
+NVIDIA/PGI, Beaverton, OR, USA\\ \email{mwolfe@nvidia.com}}
 
 \maketitle              % typeset the title of the contribution
 
 \begin{abstract}
-We describe CAST (Compiler-Assisted Software Testing), a feature in our compiler and runtime to help users automate testing high performance numerical programs.
-In the most general approach, the programmer adds CAST runtime calls or compiler directives to the program where intermediate results should be saved or compared.
-Starting with a known correct program, a sequence of intermediate reference results will be saved to a file.
-In subsequent test runs, the same CAST runtime calls or directives are used to compare the intermediate results in the running program against the reference results previously saved.
-We also describe the special case of testing an OpenACC program targeting GPUs, where the compiler generates code to run each computational kernel on both the host and the GPU, and existing data directives and clauses are used to control the compare operation after each kernel execution.
-
+CAST (Compiler-Assisted Software Testing) is a feature in our compiler and runtime to help users automate testing high performance numerical programs.
+CAST normally works by running a known working version of a program and saving intermediate results to a reference file, then running a test version of a program and comparing the intermediate results against the reference file.
+Here, we describe the special case of using CAST on OpenACC programs running on a GPU.
+Instead of saving and comparing against a saved reference file, the compiler generates code to run each compute region on both the host CPU and the GPU.
+The values computed on the host and GPU are then compared, using OpenACC data directives and clauses to decide what data to compare.
 \keywords{Program testing}
 \end{abstract}
 %
 
 
 
-\input{Intro}
-\input{Problem}
-\input{Golden}
-\input{Auto}
-\input{Experiments}
-\input{Conclusion}
+\input{AutoIntro}
+\input{AutoProblem}
+\input{AutoUsage}
+\input{AutoExp}
+\input{AutoConclude}
 %
 
 
