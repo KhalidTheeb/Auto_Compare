@@ -10,7 +10,7 @@ We assume that the CPU values are ``correct,'' and the GPU values are the ones b
 Ideally, we would compare only the data that was changed in a compute construct.
 In small sample programs, this is easy to determine, but in general this is not possible.
 Instead, we studied several options for choosing what values to compare between host and device, and at what point to do the compare.
-\begin{itemize}
+\begin{enumerate}
 \item The runtime could compare all the data in GPU memory to the corresponding CPU memory after each kernel launch.
 This is feasible, but likely to be prohibitively expensive.
 Large applications can fill the 16GB device memory (on an NVIDIA Pascal GPU), and bringing that much data back and comparing it after each kernel launch would be very expensive.
@@ -33,9 +33,11 @@ This method would be even less able to identify where the divergent computations
 
 \item Finally, the runtime could leave the choice to the user.
 This would be to allow the user the insert a runtime call or a directive to tell the runtime when to compare data, and what data to compare.
-\end{itemize}
+We considered two options: one where the user chose one or more variables or arrays to compare, and a second where the user asks the runtime to compare all variables and arrays present in device memory to the corresponding host memory locations.
+\end{enumerate}
 
 In all cases, since the same computations are done on the CPU as well as the GPU, the OpenACC runtime must allow for this and not do any actual data downloads from the device memory to host memory.
+This means \emph{update host} directives and \emph{copyout} actions from data directives should not update the host values.
 
 There are errors that \emph{OpenACC autocompare} can not detect.
 In particular, since the compare point requires synchronization with the device, any errors due to misplaced or erroneous \emph{async} clauses, or missing \emph{wait} directives or clauses will be hidden.

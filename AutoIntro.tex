@@ -10,7 +10,7 @@ We have developed compiler and runtime support to help users automate testing of
 In the general case, the user will add CAST runtime calls or directives to the program to save intermediate results from a known correct run in a reference file.
 In subsequent test runs, the same runtime calls or directives will compare the running program against the reference results previously saved.
 
-Here, we describe an \emph{OpenACC autocompare} feature of CAST for the special case of testing an OpenACC program that targets GPU parallel execution.
+Here, we describe an \emph{OpenACC autocompare} feature of CAST for the special case of testing an OpenACC\cite{openacc.16} program that targets GPU parallel execution.
 The goal is to determine just where the computation starts to go bad.
 A difference may be as benign as the different accumulation order of parallel reductions, or may be due to stale data on the device because of missing data \emph{update} operations.
 Our CAST implementation executes the parallel kernels on the CPU as well as on the GPU in a single run, and then compare the two results.
