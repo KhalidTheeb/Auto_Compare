@@ -6,6 +6,7 @@ It depends a great deal on the \emph{present table}\cite{wolfe.ashes.17} maintai
 Most of the compiler work was to enable redundant execution of compute constructs on both the host and device.
 Our implementation already had the capability of generating code for both host and device and selecting which to execute.
 We modified that capability so that instead of selecting whether to launch a device kernel or run the host code, it would do both.
+Currently, the CPU code runs sequentially.
 
 The compiler already inserted runtime calls for any explicit or implicit data clauses.
 In redundant execution mode, these runtime calls follow both the device kernel launch and the host redundant execution.
