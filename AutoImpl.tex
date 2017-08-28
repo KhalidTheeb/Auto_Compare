@@ -15,7 +15,7 @@ By default, our initial implementation will compare values that appear in a \emp
 We have also implemented two runtime routines that will compare host and device values for specific variables or arrays, or for all data present on the device.
 We have an option to disable the automatic comparisons, for when the user adds those runtime routine calls.
 
-Our OpecACC autocompare implementation uses essentially five routines in the OpenACC runtime.
+Our OpecACC autocompare implementation uses essentially six routines in the OpenACC runtime.
 The runtime routines use the \emph{present table}\cite{wolfe.ashes.17} maintained by the OpenACC runtime.
 Our implementation of the \emph{present table} saves the variable or array name, its host address, the corresponding device address, the data type, and the length.
 \begin{itemize}
@@ -36,6 +36,8 @@ This routine is shared with the more general CAST feature.
 This routine calls \textbt{uacc_compare} routine for that block of memory.
 \item The user-callable \textbt{acc_compare_all} routine has no arguments.
 It walks the entire \emph{present table} to find all blocks of memory that are also present on the device, and calls \textbt{uacc_compare} on each block.
+\item The \textbt{pgi_compare_error} is a routine that is called when \textbt{pgi_compare} detects an untolerated difference.
+This is a convenient place for the user to set a breakpoint in a debugger, when trying to find what is going wrong.
 \end{itemize}
 
 The user can set various options using the \textbt{PGI_COMPARE} environment variable.
@@ -58,6 +60,7 @@ option & Description \\
 \textbt{skip=}\textit{n}    & Skip the first \textit{n} differences \\
 \textbt{patch}   &   Patch erroneous values with correct values \\
 \textbt{stop}   &   Stop at after \textbt{report=} differences \\
+\textbt{summary}   &   Print a summary when the program completes \\
 \hline
 \end{tabular}
 \end{center}

@@ -12,4 +12,7 @@ We are considering future work on the autocompare feature, including:
 \item Ways to not require redundant execution of the whole program, but only the part being tested.
 \item Running the host code in parallel as well, for performance, though this could raise a number of other potential spurious differences.
 \item Optimizing the comparison operation.
+\item Adding support for arrays of structs or arrays of derived types, where each field would have a type-specific compare.
+\item Adding support for nested data structures, where a struct memory is a pointer to another array.
+The compare function would recurse to compare the nested structure as well.
 \end{itemize}
