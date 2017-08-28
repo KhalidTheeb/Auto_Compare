@@ -34,7 +34,7 @@ The values shown in Table~\ref{res1} are:
 \end{table}
 
 The two costs of the autocompare feature are running the program on both CPU and GPU, and downloading and comparing the values.
-Even compare to sequential CPU time, the overhead is significant.
+Even compared to sequential CPU time, the overhead is significant, and seems directly related to the number of words or elements compared.
 However, using this feature to find where a GPU computation diverges moves the cost from the programmer to the computer, so it could be invaluable regardless of the overhead.
 One side note: the \emph{test} datasets are relatively small.
 Even so, we had to set the relative tolerance to avoid the comparisons detecting differences due to different summation accumulation order.

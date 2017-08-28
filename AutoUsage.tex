@@ -6,9 +6,9 @@ It launches the kernel on the GPU, then executes the corresponding code on the C
 This keeps the values in system memory in sync with the values in GPU device memory, assuming the same computation is done correctly on both.
 
 The next, equally important step is to compare the computed values on the CPU with those on the GPU.
-We assume that the CPU values are ``correct,'' and the GPU values are the ones being tested.
+We assume that the CPU values are the reference values, and the GPU values are the ones being tested.
 Ideally, we would compare only the data that was changed in a compute construct.
-In small sample programs, this is easy to determine, but in general this is not possible.
+In small sample programs, this is easy to automatically determine, but in general this is not possible.
 Instead, we studied several options for choosing what values to compare between host and device, and at what point to do the compare.
 \begin{enumerate}
 \item The runtime could compare all the data in GPU memory to the corresponding CPU memory after each kernel launch.
@@ -17,13 +17,13 @@ Large applications can fill the 16GB device memory (on an NVIDIA Pascal GPU), an
 However, it would certainly be able to identify a specific kernel when results start to diverge.
 
 \item The runtime could compare data only at the end of a compute construct, and only data that is either in an explicit data clause or is explicitly referenced in the construct.
-This is less costly than comparing all data, but it would miss global data that is modified only in routines called from the compute construct.
+This is less costly than comparing all data, but it could miss updated global data that is modified only in routines called from the compute construct.
 
 \item The runtime could compare data only at the end of a compute construct, and only that data in an explicit data clause.
 This is even less costly, and only compares data that the programmer thought important enough to include in a data clause.
 
 \item The runtime could compare data only at the end of a data region, and only the data in explicit data clauses.
-This is likely to be less costly because a data region can execute many compute constructs, such as an outer loop that contains a compute construct.
+This is likely to be less costly because a data region typically contains many compute constructs, such as an outer loop that contains a compute construct.
 However it is less able to identify which particular compute construct caused the divergence.
 
 \item The runtime could compare data when it would otherwise be copied back to the host.
