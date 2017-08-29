@@ -36,14 +36,14 @@ This is the workhorse of the autocompare feature:
 This routine is shared with the more general CAST feature.
 
 \item The user-callable \textbt{acc_compare} routine is passed the host address of one array that is also present on the device.
-This routine calls \textbt{uacc_compare} routine for that block of memory as shown in listing [1.1].
+This routine calls \textbt{uacc_compare} routine for that block of memory as shown in Listing~\ref{code:GPUsin}.
 \item The user-callable \textbt{acc_compare_all} routine has no arguments.
 It walks the entire \emph{present table} to find all blocks of memory that are also present on the device, and calls \textbt{uacc_compare} on each block.
 \end{itemize}
 
 The user can set various options using the \textbt{PGI_COMPARE} environment variable.
 The user can set an \emph{absolute tolerance} or \emph{relative tolerance} for floating point comparisons.
-The user can select report options, such as to only report the first $n$ differences, or to skip the first $n$ differences, a sample report output is illustrated in listing [1.2] .
+The user can select report options, such as to only report the first $n$ differences, or to skip the first $n$ differences, a sample report output is illustrated in Listing~\ref{code:sampleOUT}.
 Finally, the user can select the action to take when the report limit is exceeded, to stop execution, continue execution, or to patch the bad results and then continue.
 In our implementation, patching the values means updating the device locations with the host values.
 The \textbt{PGI_COMPARE} environment variable contains a comma-separated list of options; set Table~\ref{env} for details.
