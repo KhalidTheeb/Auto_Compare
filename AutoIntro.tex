@@ -15,7 +15,7 @@ It's enough of a problem to test that a port of an application to a new processo
 Here, we describe the \emph{OpenACC autocompare} feature of CAST for the special case of testing an OpenACC\cite{openacc.16} program that targets GPU parallel execution.
 The goal is to determine just where the computation starts to go bad.
 A difference may be as due to the same problems that arise when porting to any new processor, or changing optimizations, or running in parallel.
-However, the different may also be due to the unique behavior of accelerated applications, such as stale data on the device because of missing data \emph{update} operations.
+However, the difference may also be due to the unique behavior of accelerated applications, such as stale data on the device because of missing data \emph{update} operations.
 Our CAST autocompare implementation executes the parallel kernels on the CPU as well as on the GPU in a single run, and then compares the two results.
 The user can set options such as floating point tolerances, choosing what to report, and how to proceed if there are differences.
 For instance, the user can choose to stop the program after $n$ differences or to replace the bad results with the known good values and continue.
