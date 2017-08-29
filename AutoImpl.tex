@@ -32,8 +32,9 @@ This is the workhorse of the autocompare feature:
 \item It downloads the data from device memory to the temporary memory.
 \item It calls the \textbt{pgi_compare} routine to do the actual compare operation.
 \end{itemize}
-\item The \textbt{pgi_compare} routine implements the type-specific compare operation, using the appropriate tolerances.
-This routine is shared with the more general CAST feature.
+\item The \textbt{pgi_compare} routine is part of the more general CAST runtime.
+For each block of memory, it first does a fast \textbt{memcmp} to see if the two blocks are exactly the same.
+If not, it does a type-specific compare operation for each element, using the appropriate tolerances.
 
 \item The user-callable \textbt{acc_compare} routine is passed the host address of one array that is also present on the device.
 This routine calls \textbt{uacc_compare} routine for that block of memory as shown in Listing~\ref{code:GPUsin}.
@@ -61,6 +62,7 @@ option & Description \\
 \textbt{skip=}\textit{n}    & Skip the first \textit{n} differences \\
 \textbt{patch}   &   Patch erroneous values with correct values \\
 \textbt{stop}   &   Stop at after \textbt{report=} differences \\
+\textbt{summary}   &   Print a summary of the comparisons and differences found at program exit \\
 \hline
 \end{tabular}
 \end{center}
