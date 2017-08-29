@@ -33,7 +33,7 @@ We have an option to disable the automatic comparisons, for when the user adds t
 
 
 
-Our OpecACC autocompare implementation uses essentially five routines in the OpenACC runtime.
+Our OpecACC autocompare implementation uses essentially six routines in the OpenACC runtime.
 The runtime routines use the \emph{present table}\cite{wolfe.ashes.17} maintained by the OpenACC runtime.
 Our implementation of the \emph{present table} saves the variable or array name, its host address, the corresponding device address, the data type, and the length.
 \begin{itemize}
@@ -56,6 +56,8 @@ If not, it does a type-specific compare operation for each element, using the ap
 %This routine calls \textbt{uacc_compare} routine for that block of memory as shown in Listing~\ref{GPUsin}.
 \item The user-callable \textbt{acc_compare_all} routine has no arguments.
 It walks the entire \emph{present table} to find all blocks of memory that are also present on the device, and calls \textbt{uacc_compare} on each block.
+\item The \textbt{pgi_compare_error} routine is called with \textbt{pgi_compare} detects an untolerated difference.
+This is merely a convenient place for the user to set a breakpoint in a debugger, when trying to find what is going wrong.
 \end{itemize}
 
 The user can set various options using the \textbt{PGI_COMPARE} environment variable.
