@@ -15,7 +15,9 @@ By default, our initial implementation will compare values that appear in a \emp
 We have also implemented two runtime routines that will compare host and device values for specific variables or arrays, or for all data present on the device.
 We have an option to disable the automatic comparisons, for when the user adds those runtime routine calls.
 
-Our OpecACC autocompare implementation uses essentially six routines in the OpenACC runtime.
+
+
+Our OpecACC autocompare implementation uses essentially five routines in the OpenACC runtime.
 The runtime routines use the \emph{present table}\cite{wolfe.ashes.17} maintained by the OpenACC runtime.
 Our implementation of the \emph{present table} saves the variable or array name, its host address, the corresponding device address, the data type, and the length.
 \begin{itemize}
@@ -32,12 +34,11 @@ This is the workhorse of the autocompare feature:
 \end{itemize}
 \item The \textbt{pgi_compare} routine implements the type-specific compare operation, using the appropriate tolerances.
 This routine is shared with the more general CAST feature.
+
 \item The user-callable \textbt{acc_compare} routine is passed the host address of one array that is also present on the device.
-This routine calls \textbt{uacc_compare} routine for that block of memory.
+This routine calls \textbt{uacc_compare} routine for that block of memory as shown in listing [1.1].
 \item The user-callable \textbt{acc_compare_all} routine has no arguments.
 It walks the entire \emph{present table} to find all blocks of memory that are also present on the device, and calls \textbt{uacc_compare} on each block.
-\item The \textbt{pgi_compare_error} is a routine that is called when \textbt{pgi_compare} detects an untolerated difference.
-This is a convenient place for the user to set a breakpoint in a debugger, when trying to find what is going wrong.
 \end{itemize}
 
 The user can set various options using the \textbt{PGI_COMPARE} environment variable.
@@ -60,10 +61,32 @@ option & Description \\
 \textbt{skip=}\textit{n}    & Skip the first \textit{n} differences \\
 \textbt{patch}   &   Patch erroneous values with correct values \\
 \textbt{stop}   &   Stop at after \textbt{report=} differences \\
-\textbt{summary}   &   Print a summary when the program completes \\
 \hline
 \end{tabular}
 \end{center}
 \caption{Options that can appear in the \textbt{PGI_COMPARE} environment variable.}
 \label{env}
 \end{table}
+
+
+\begin{lstlisting}[caption={An example usage of the user-callable uacc\_compare at line 11 and acc\_compare\_all at line 12}, label=code:GPUsin,frame=single,style=Cstyle]
+ void vectorSinGPU(double *A, double * C, uint32_t N)
+{    
+ 	#pragma acc enter data copyin(A[0:N])    
+    printf(\quotes{Copy input data from the host memory to the CUDA device\n});    
+      #pragma acc enter data create(C[0:N])    
+      printf(\quotes{CUDA kernel launch\n});    
+      #pragma acc kernels loop present(A[0:N],C[0:N]) independent    
+      for (int i = 0; i < N; i++) {        
+             C[i] = sin(A[i]);    
+      }
+   acc_compare(C,N);    
+   acc_compare_all();
+      printf(\quotes{Copy output data from the CUDA device to the host memory\n});    
+      #pragma acc exit data copyout(C[0:N])    
+      #pragma acc exit data delete(A[0:N])
+}
+
+\end{lstlisting}
+
+
