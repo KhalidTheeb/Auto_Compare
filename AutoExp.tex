@@ -2,7 +2,7 @@
 
 We have measured the overhead of our OpenACC autocompare implementation to demonstrate its usability.
 We used three of the SPEC ACCEL v1.2 benchmarks, using the \emph{test} dataset.
-In these three benchmarks, the program has an outer time step loop containing the main computation.
+In each case, the program has an outer time step loop containing the main computation.
 The times shown are in seconds, and these are officially SPEC \emph{estimates}, since they were not run in the SPEC harness.
 The host machine was a 6-core Intel Haswell (core i7-5820K) with a 3.30GHz clock, with an NVIDIA Tesla Kepler K40c GPU.
 We used the default autocompare options, but set a relative tolerance.
@@ -14,6 +14,18 @@ The values shown in Table~\ref{res1} are:
 \item Number of variables or arrays compared.
 \item Number of data items compared.
 \end{itemize}
+
+
+
+\begin{figure*}[t]
+    \centering
+    \includegraphics [width=\linewidth] {Table1.pdf}
+    \caption{Results showing overhead of OpenACC autocompare.}
+    \label{fig:sle_fiure}
+\end{figure*}
+
+
+
 
 \begin{table}
 \begin{center}
