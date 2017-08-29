@@ -6,7 +6,49 @@
 % See http://www.springer.com/computer/lncs/lncs+authors?SGWID=0-40209-0-0-0
 % for the full guidelines.
 %
+
+
+
 \documentclass{llncs}
+
+\hyphenation{op-tical net-works semi-conduc-tor}
+\usepackage{hyperref}
+\usepackage{courier}
+\usepackage{color}
+\usepackage[scaled]{helvet}
+\usepackage{listings}
+\newcounter{codecounter}[subsection]
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{Cstyle}{
+    language=C,
+    linewidth=12cm,
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    backgroundcolor=\color{backcolour},
+    commentstyle=\itshape\color{codegreen},
+    keywordstyle=\color{blue},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{purple},
+    basicstyle=\footnotesize\ttfamily,
+    numbers=left,
+    xleftmargin=\parindent,
+    framexleftmargin=\parindent,
+    %numbersep=4pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    firstnumber=1,
+    tabsize=1
+}
+
+
 
 % define tabs for otabbing region
 \newcommand{\otabs}{\hspace*{8mm}\=\hspace*{8mm}\=\hspace{8mm}\=}
