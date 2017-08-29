@@ -5,7 +5,7 @@ The goal is to get higher performance, but the programmer must also test that th
 While essentially all processors use the same IEEE floating point representation, not all will support the same features, such as FMA (fused multiple-add) operations.
 Different processors, different algorithms, different programs implementing the same algorithm, or different compiler optimizations on the same program can generate a different sequence of operations, producing different floating point roundoff behavior.
 To validate an updated program may require identifying at which point in the program the results start to diverge, and then determining if the divergence is significant.
-We have developed a feature in our compiler and runtime called Compiler-Assisted Software Testing or CAST (described elsewhere).
+We have developed a feature in our compiler and runtime called Compiler-Assisted Software Testing or CAST\cite{ahmad.submitted.17}.
 The programmer adds CAST runtime calls or directives to a working program to save a sequence of intermediate results to a reference file.
 The same runtime calls or directives in the updated or ported program will then compare the sequence of intermediate results to those in the reference file.
 
