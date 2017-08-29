@@ -43,7 +43,7 @@ It walks the entire \emph{present table} to find all blocks of memory that are a
 
 The user can set various options using the \textbt{PGI_COMPARE} environment variable.
 The user can set an \emph{absolute tolerance} or \emph{relative tolerance} for floating point comparisons.
-The user can select report options, such as to only report the first $n$ differences, or to skip the first $n$ differences.
+The user can select report options, such as to only report the first $n$ differences, or to skip the first $n$ differences, a sample report output is illustrated in listing [1.2] .
 Finally, the user can select the action to take when the report limit is exceeded, to stop execution, continue execution, or to patch the bad results and then continue.
 In our implementation, patching the values means updating the device locations with the host values.
 The \textbt{PGI_COMPARE} environment variable contains a comma-separated list of options; set Table~\ref{env} for details.
@@ -69,7 +69,6 @@ option & Description \\
 \end{table}
 
 
-
 \begin{lstlisting}[caption={An example usage of the user-callable uacc\_compare at line 11 and acc\_compare\_all at line 12}, label=code:GPUsin,frame=single,style=Cstyle]
  void vectorSinGPU(double *A, double * C, uint32_t N)
 {    
@@ -92,3 +91,27 @@ option & Description \\
 
 
 
+
+
+
+
+\begin{lstlisting}[caption={Sample report when comparing 20000 elements of float data type and using absolute tolerance of 0.1}, label=code:sampleOUT,frame=single,style=Cstyle]
+ Floats at: 0 PASSED the equivalence test: 0.0280372 and 0.0280372 TOL used 0.1
+Floats at: 1 PASSED the equivalence test: 0.16666 and 0.16666 TOL used 0.1
+Floats at: 2 PASSED the equivalence test: 0.119761 and 0.119761 TOL used 0.1
+Floats at: 3 PASSED the equivalence test: 0.575198 and 0.575198 TOL used 0.1
+Floats at: 4 PASSED the equivalence test: 0.356631 and 0.356631 TOL used 0.1
+Floats at: 5 PASSED the equivalence test: 0.894281 and 0.894281 TOL used 0.1
+...
+...
+...
+Floats at: 19994 PASSED the equivalence test: 0.969375 and 0.969375 TOL used 0.1
+Floats at: 19995 PASSED the equivalence test: 0.37513 and 0.37513 TOL used 0.1
+Floats at: 19996 PASSED the equivalence test: 0.264415 and 0.264415 TOL used 0.1
+Floats at: 19997 PASSED the equivalence test: 0.88696 and 0.88696 TOL used 0.1
+Floats at: 19998 PASSED the equivalence test: 0.338411 and 0.338411 TOL used 0.1
+Floats at: 19999 PASSED the equivalence test: 0.389184 and 0.389184 TOL used 0.1
+Number of miss match = 0 first miss match occured at 0 out of 20000 comparisons
+MAX error: 0.000000e+00
+
+\end{lstlisting}
