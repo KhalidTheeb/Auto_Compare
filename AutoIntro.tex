@@ -1,7 +1,7 @@
 \section{Introduction}
 
 Porting an application to another processor, or adding parallel algorithms, or even enabling new optimizations can create challenges for testing.
-The goal is to get higher performance, but the programmer must also test that the computed answers are still accurate.
+The goal may be to get higher performance, but the programmer must also test that the computed answers are still accurate.
 While essentially all processors use the same IEEE floating point representation, not all will support the same features, such as FMA (fused multiple-add) operations.
 Different processors, different algorithms, different programs implementing the same algorithm, or different compiler optimizations on the same program can generate a different sequence of operations, producing different floating point roundoff behavior.
 To validate an updated program may require identifying at which point in the program the results start to diverge, and then determining if the divergence is significant.
