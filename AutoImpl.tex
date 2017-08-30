@@ -1,5 +1,11 @@
 \section{Autocompare Implementation}
 
+The OpenACC autocompare feature is enabled with a command line option.
+When enabled, the compiler generates code for each parallel construct for both the CPU and the GPU.
+It launches the kernel on the GPU, then executes the corresponding code on the CPU.
+OpenACC programs have directives to tell the compiler what loops to run in parallel on the GPU (\emph{compute constructs}), and what data to copy to the device and when to update data between device and host (\emph{data constructs}).
+Our \emph{OpenACC autocompare} feature uses these directives, along with a table in the OpenACC runtime that keeps track of the correspondence between host and device data, to select what data to compare.
+
 The implementation of OpenACC autocompare is split between our OpenACC compiler and the OpenACC runtime.
 Most of the compiler work was to enable redundant execution of compute constructs on both the host and device.
 Our implementation already had the capability of generating code for both host and device and selecting which to execute.
@@ -29,7 +35,7 @@ void vectorSinGPU(double *A, double * C, uint32_t N)
 By default, our initial implementation will compare values that appear in a \emph{copy} or \emph{copyout} data clauses (explicitly or implicitly), or an \emph{update host} directive.
 For the code in Listing~\ref{GPUsin}, the values for \textbt{C} would be compared at the exit of the data construct at line 11, but not the values for \textbt{A} because \textbt{A} is \textbt{copyin} only.
 We have also implemented two runtime routines that will compare host and device values for specific variables or arrays, or for all data present on the device.
-We have an option to disable the automatic comparisons, for when the user adds those runtime routine calls.
+We have an option to enable redundant execution but disable the automatic comparisons, for when the user adds those runtime routine calls.
 
 
 
@@ -53,17 +59,17 @@ For each block of memory, it first does a fast \textbt{memcmp} to see if the two
 If not, it does a type-specific compare operation for each element, using the appropriate tolerances.
 
 \item The user-callable \textbt{acc_compare} routine is passed the host address of one array that is also present on the device.
-%This routine calls \textbt{uacc_compare} routine for that block of memory as shown in Listing~\ref{GPUsin}.
+This routine calls \textbt{uacc_compare} routine for that block of memory. % as shown in Listing~\ref{GPUsin}.
 \item The user-callable \textbt{acc_compare_all} routine has no arguments.
 It walks the entire \emph{present table} to find all blocks of memory that are also present on the device, and calls \textbt{uacc_compare} on each block.
-\item The \textbt{pgi_compare_error} routine is called with \textbt{pgi_compare} detects an untolerated difference.
+\item The \textbt{pgi_compare_error} routine is called when \textbt{pgi_compare} detects an untolerated difference.
 This is merely a convenient place for the user to set a breakpoint in a debugger, when trying to find what is going wrong.
 \end{itemize}
 
 The user can set various options using the \textbt{PGI_COMPARE} environment variable.
 The user can set an \emph{absolute tolerance} or \emph{relative tolerance} for floating point comparisons.
-The user can select report options, such as to only report the first $n$ differences, or to skip the first $n$ differences.%, a sample report output is illustrated in Listing~\ref{code:sampleOUT}.
-Finally, the user can select the action to take when the report limit is exceeded, to stop execution, continue execution, or to patch the bad results and then continue.
+The user can select report options, such as to only report the first $n$ differences, or to skip the first $n$ differences. %, a sample report output is illustrated in Listing~\ref{code:sampleOUT}.
+Finally, the user can select the action to take when the report limit is exceeded: to stop execution, continue execution, or to patch the bad results and then continue.
 In our implementation, patching the values means updating the device locations with the host values.
 The \textbt{PGI_COMPARE} environment variable contains a comma-separated list of options; set Table~\ref{env} for details.
 \begin{table}
@@ -89,7 +95,7 @@ option & Description \\
 \end{table}
 
 An example of the \textbt{summary} option is shown in Listing~\ref{summary}.
-This was used to generate the results in the next section.
+This feature was used to generate the results in the next section.
 \begin{lstlisting}[caption={Summary option output for one of the benchmark programs.}, label=summary,frame=single,style=Xstyle]
 compared 202 blocks, 3388997632 elements, 13555990528 bytes
 1488912980 errors tolerated in 201 blocks

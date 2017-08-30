@@ -14,7 +14,7 @@ With an accelerator, some (perhaps most) of the computations are done on a proce
 It's enough of a problem to test that a port of an application to a new processor is correct, or that enabling a new optimization still produces correct answers, but adding the complexity of using an accelerator for part of the computation exacerbates that even more.
 Here, we describe the \emph{OpenACC autocompare} feature of CAST for the special case of testing an OpenACC\cite{openacc.16} program that targets GPU parallel execution.
 The goal is to determine just where the computation starts to go bad.
-A difference may be as due to the same problems that arise when porting to any new processor, or changing optimizations, or running in parallel.
+A difference may be due to the same problems that arise when porting to any new processor, or changing optimizations, or running in parallel.
 However, the difference may also be due to the unique behavior of accelerated applications, such as stale data on the device because of missing data \emph{update} operations.
 Our CAST autocompare implementation executes the parallel kernels on the CPU as well as on the GPU in a single run, and then compares the two results.
 The user can set options such as floating point tolerances, choosing what to report, and how to proceed if there are differences.
