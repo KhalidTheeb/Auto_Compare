@@ -6,7 +6,12 @@
 % See http://www.springer.com/computer/lncs/lncs+authors?SGWID=0-40209-0-0-0
 % for the full guidelines.
 %
-\documentclass{llncs}
+\documentclass[conference]{IEEEtran}
+\usepackage{cite}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{algorithmic}
+\usepackage{graphicx}
+\usepackage{textcomp}
 
 % define tabs for otabbing region
 \newcommand{\otabs}{\hspace*{8mm}\=\hspace*{8mm}\=\hspace{8mm}\=}
@@ -25,23 +30,27 @@
 
 \title{Compiler Support for Testing Numerical HPC Applications}
 %
-\titlerunning{Testing Numerical HPC Applications}  % abbreviated title (for running head)
+%\titlerunning{Testing Numerical HPC Applications}  % abbreviated title (for running head)
 %                                     also used for the TOC unless
 %                                     \toctitle is used
 %
-\author{Khalid Ahmad\inst{1} \and Michael Wolfe\inst{2}}
+\author{
+\IEEEauthorblockN{Khalid Ahmad}
+\IEEEauthorblockA{\textit{University of Utah}\\
+Salt Lake City, Utah, USA \\
+khalid@cs.utah.edu}
+\and
+\IEEEauthorblockN{Michael Wolfe}
+\IEEEauthorblockA{\textit{NVIDIA Corp.} \\
+Beaverton, Oregon, USA \\
+mwolfe@nvidia.com}
+}
 %
-\authorrunning{Khalid Ahmad et al.} % abbreviated author list (for running head)
+%\authorrunning{Khalid Ahmad et al.} % abbreviated author list (for running head)
 %
 %%%% list of authors for the TOC (use if author list has to be modified)
-\tocauthor{Khalid Ahmad, Michael Wolfe}
+%\tocauthor{Khalid Ahmad, Michael Wolfe}
 %
-\institute{University of Utah,
-Salt Lake City, UT, USA\\
-\email{Khalid@cs.utah.edu}
-\and
-NVIDIA/PGI, Beaverton, OR, USA}
-
 \maketitle              % typeset the title of the contribution
 
 \begin{abstract}
@@ -49,8 +58,10 @@ We describe CAST (Compiler-Assisted Software Testing), a feature in our compiler
 The programmer adds CAST runtime calls or compiler directives to the program where intermediate results should be saved or compared.
 Starting with a known correct program, a sequence of intermediate reference results will be saved to a file.
 In subsequent test runs, the same CAST runtime calls or directives are used to compare the intermediate results in the running program against the reference results previously saved.
-\keywords{Program testing}
 \end{abstract}
+\begin{IEEEkeywords}
+Program testing
+\end{IEEEkeywords}
 %
 
 
