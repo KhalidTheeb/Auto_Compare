@@ -1,11 +1,12 @@
 \section{Autocompare with OpenACC}
 
-This keeps the values in system memory in sync with the values in GPU device memory, assuming the same computation is done correctly on both.
+The PCAST OpenACC autocompare feature works by executing each OpenACC compute kernel on both the GPU and the host CPU.
+This keeps the values in system memory in sync with the values in GPU device memory, assuming the same computation is done correctly on each.
 
 The next, equally important step is to compare the computed values on the CPU with those on the GPU.
 We assume that the CPU values are the reference values, and the GPU values are the ones being tested.
 Ideally, we would compare only the data that was changed in a compute construct.
-In small sample programs, this is easy to automatically determine, but in general this is not possible.
+In small sample programs, this is easy to automatically determine, but in general this is not feasible.
 Instead, we studied several options for choosing what values to compare between host and device, and at what point to do the compare.
 \begin{enumerate}
 \item The runtime could compare all the data in GPU memory to the corresponding CPU memory after each kernel launch.
@@ -16,7 +17,7 @@ However, it would certainly be able to identify the specific kernel where result
 \item The runtime could compare data only at the end of a compute construct, and only data that is either in an explicit data clause or is explicitly referenced in the construct.
 This is less costly than comparing all data, but it could miss updated global data that is modified only in routines called from the compute construct.
 
-\item The runtime could compare data only at the end of a compute construct, and only that data in an explicit data clause.
+\item The runtime could compare data only at the end of a compute construct, and only that data in an explicit data clause on that compute construct (not data implicitly copied to the GPU, or in a clause for an outer data construct).
 This is even less costly, and only compares data that the programmer thought important enough to include in a data clause.
 
 \item The runtime could compare data only at the end of a data region, and only the data in explicit data clauses.
@@ -36,7 +37,7 @@ We considered two options: one where the user chose one or more variables or arr
 In all cases, since the same computations are done on the CPU as well as the GPU, the OpenACC runtime must allow for this and not do any actual data downloads from the device memory to host memory.
 This means \emph{update host} directives and \emph{copyout} actions from data directives should not update the host values.
 
-There are errors that \emph{OpenACC autocompare} can not detect.
+There are errors that the PCAST OpenACC autocompare feature can not detect.
 In particular, since the compare point requires synchronization with the device, any errors due to misplaced or erroneous \emph{async} clauses, or missing \emph{wait} directives or clauses will be hidden.
 Also, OpenACC has features that allow different computations on the host as on the device, to allow for different algorithmic formulations that are more appropriate for each processor.
 Such a feature can allow for programming mistakes that are hard to detect.

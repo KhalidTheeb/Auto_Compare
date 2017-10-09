@@ -1,16 +1,16 @@
 \section{Autocompare Implementation}
 
-The OpenACC autocompare feature is enabled with a command line option.
+The PCAST OpenACC autocompare feature is enabled with a command line option.
 When enabled, the compiler generates code for each parallel construct for both the CPU and the GPU.
-It launches the kernel on the GPU, then executes the corresponding code on the CPU.
+During execution, the program launches the compute region onto the GPU; while the GPU code is running the program executes the corresponding code on the CPU.
 OpenACC programs have directives to tell the compiler what loops to run in parallel on the GPU (\emph{compute constructs}), and what data to copy to the device and when to update data between device and host (\emph{data constructs}).
-Our \emph{OpenACC autocompare} feature uses these directives, along with a table in the OpenACC runtime that keeps track of the correspondence between host and device data, to select what data to compare.
+The PCAST OpenACC autocompare feature uses these directives, along with a table in the OpenACC runtime that keeps track of the correspondence between host and device data, to select what data to compare.
 
 The implementation of OpenACC autocompare is split between our OpenACC compiler and the OpenACC runtime.
 Most of the compiler work was to enable redundant execution of compute constructs on both the host and device.
 Our implementation already had the capability of generating code for both host and device and selecting which to execute.
 We modified that capability so that instead of selecting whether to launch a device kernel or run the host code, it would do both.
-Currently, the CPU code runs sequentially.
+Currently, the CPU code runs sequentially on one CPU thread.
 
 The compiler already inserted runtime calls for any explicit and implicit data clauses.
 In the example program shown in Listing~\ref{GPUsin}, these calls are inserted at entry to the data construct at line 4 and the exit from that construct at line 11.
@@ -24,7 +24,8 @@ void vectorSinGPU(double *A, double * C, uint32_t N)
   #pragma acc data copyin(A[0:N]) copyout(C[0:N])
   {
     // Compute construct
-    #pragma acc kernels loop present(A[0:N],C[0:N]) independent
+    #pragma acc kernels loop independent \
+                           present(A[0:N],C[0:N])
     for (int i = 0; i < N; i++) {
       C[i] = fsin(A[i]);
     }
@@ -40,7 +41,7 @@ We have an option to enable redundant execution but disable the automatic compar
 
 
 Our OpenACC autocompare implementation uses essentially six routines in the OpenACC runtime.
-The runtime routines use the \emph{present table}\cite{wolfe.ashes.17} maintained by the OpenACC runtime.
+The runtime routines use the \emph{present table}~\cite{wolfe.ashes.17} maintained by the OpenACC runtime.
 Our implementation of the \emph{present table} saves the variable or array name, its host address, the corresponding device address, the data type, and the length.
 \begin{itemize}
 \item The \textbt{uacc_compare_contiguous} routine is given a host array section descriptor.
@@ -54,7 +55,7 @@ This is the workhorse of the autocompare feature:
 \item It downloads the data from device memory to the temporary memory.
 \item It calls the \textbt{pgi_compare} routine to do the actual compare operation.
 \end{itemize}
-\item The \textbt{pgi_compare} routine is part of the more general CAST runtime.
+\item The \textbt{pgi_compare} routine is part of the more general PCAST runtime.
 For each block of memory, it first does a fast \textbt{memcmp} to see if the two blocks are exactly the same.
 If not, it does a type-specific compare operation for each element, using the appropriate tolerances.
 
@@ -66,12 +67,6 @@ It walks the entire \emph{present table} to find all blocks of memory that are a
 This is merely a convenient place for the user to set a breakpoint in a debugger, when trying to find what is going wrong.
 \end{itemize}
 
-The user can set various options using the \textbt{PGI_COMPARE} environment variable.
-The user can set an \emph{absolute tolerance} or \emph{relative tolerance} for floating point comparisons.
-The user can select report options, such as to only report the first $n$ differences, or to skip the first $n$ differences. %, a sample report output is illustrated in Listing~\ref{code:sampleOUT}.
-Finally, the user can select the action to take when the report limit is exceeded: to stop execution, continue execution, or to patch the bad results and then continue.
-In our implementation, patching the values means updating the device locations with the host values.
-The \textbt{PGI_COMPARE} environment variable contains a comma-separated list of options; set Table~\ref{env} for details.
 \begin{table}
 \begin{center}
 \begin{tabular}{ll}
@@ -93,6 +88,12 @@ option & Description \\
 \caption{Options that can appear in the \textbt{PGI_COMPARE} environment variable.}
 \label{env}
 \end{table}
+The user can set various options using the \textbt{PGI_COMPARE} environment variable.
+The user can set an \emph{absolute tolerance} or \emph{relative tolerance} for floating point comparisons.
+The user can select report options, such as to only report the first $n$ differences, or to skip the first $n$ differences. %, a sample report output is illustrated in Listing~\ref{code:sampleOUT}.
+Finally, the user can select the action to take when the report limit is exceeded: to stop execution, continue execution, or to patch the bad results and then continue.
+In our implementation, patching the values means updating the device locations with the host values.
+The \textbt{PGI_COMPARE} environment variable contains a comma-separated list of options; set Table~\ref{env} for details.
 
 An example of the \textbt{summary} option is shown in Listing~\ref{summary}.
 This feature was used to generate the results in the next section.
@@ -124,3 +125,49 @@ compared 202 blocks, 3388997632 elements, 13555990528 bytes
 %MAX error: 0.000000e+00
 %
 %\end{lstlisting}
+
+Some of the advantages of our implementation, or any similar implementation, are:
+\begin{itemize}
+\item The autocompare feature could be used on any OpenACC target device that has separate memory, such as AMD GPUs.
+The only GPU supported by the current PGI compilers are NVIDIA GPUs, so that is what we report on in the next section.
+\item If the OpenACC compute constructs are being run on multiple CPUs with MPI parallelism, the autocompare feature will work independently on each CPU.
+Each CPU will launch its compute construct to the GPU and run that compute on the CPU as well, and do its comparisons independently.
+The current implementation does not try to separate the reports from different MPI ranks or combine the summaries.
+\item If the OpenACC compute constructs are being run on multiple cores with OpenMP parallelism, the autocompare feature will work independently on each thread, as with MPI.
+The difference is that when two OpenMP threads launch work to the same GPU, they share data on that GPU as well.
+There can be data races on the GPU due to the OpenMP parallelism, which may be exposed with the autocompare feature, but we make no claims to be able to identify or isolate such data races.
+\item The normal PCAST feature uses extra API calls or directives to designate what data to compare.
+The autocompare feature uses already-existing OpenACC data directives and clauses, so no extra programming work is needed.
+\item The normal PCAST feature saves the data to be compared in a file, then rereads that file when doing the compare step.
+Those files can grow quite large.
+The autocompare feature doesn't save the data, it generates the data during execution.
+This makes it feasible to compare more data more frequently.
+\end{itemize}
+Some of the disadvantages are:
+\begin{itemize}
+\item The CPU code is run sequentially on a single core.
+Ideally, this code could be parallelized as well.
+The biggest difference between parallelized and unparallelized code has to do with different order of reduction operations.
+\item This implementation requires separate memories for the accelerator device.
+Some accelerators share memory with the CPU, and NVIDIA GPUs in particular are moving in that direction.
+Supporting an autocompare feature with shared memory would require identifying:
+\begin{itemize}
+\item Identifying all data that might be modified in the compute region, including global data.
+\item Saving the original values of data that might be modified.
+\item Running the compute region on one target (the GPU, say).
+\item Saving the potentially modified data in separate space, and restoring the original values of the modified data.
+A clever implementation could reuse the same memory for both purposes, and swap the values.
+\item Running the compute region on the other target (the CPU, say).
+\item Comparing the two modified copies of the data.
+\end{itemize}
+The first step is critical and must be conservative.
+If the first target modifies some data and it is not restored before the second target executes, the second target is starting with bad data and could give bad results.
+Unfortunately, the first step is also extremely difficult in general, and beyond the capability of a commercial product compiler.
+Because of this, doing an autocompare implementation between a sequential and parallel execution of the same compute region on the same processor is difficult.
+The normal PCAST feature case be used to handle such a problem.
+\item The autocompare feature may find where the GPU computes a different value, but it doesn't identify or isolate why the value is different.
+The user would like to know, for instance, whether the GPU is using a different implementation of an math routine, or if the compiler applied some optimization to one target and not the other.
+In particular, the user would like to know if there are program changes or command-line options to select to force the results to be the same.
+Currently, we have no solution for these questions.
+\item Our current implementation handles variables and arrays of basic data types (integer, floating point, complex), but not C++ structs or Fortran derived types; this is left for future work.
+\end{itemize}

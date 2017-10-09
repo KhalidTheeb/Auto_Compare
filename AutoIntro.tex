@@ -5,18 +5,18 @@ The goal may be to get higher performance, but the programmer must also test tha
 While essentially all processors use the same IEEE floating point representation, not all will support the same features, such as FMA (fused multiple-add) operations.
 Different processors, different algorithms, different programs implementing the same algorithm, or different compiler optimizations on the same program can generate a different sequence of operations, producing different floating point roundoff behavior.
 To validate an updated program may require identifying at which point in the program the results start to diverge, and then determining if the divergence is significant.
-We have developed a feature in our compiler and runtime called Compiler-Assisted Software Testing or CAST\cite{ahmad.submitted.17}.
-The programmer adds CAST runtime calls or directives to a working program to save a sequence of intermediate results to a reference file.
+We have developed a feature in the PGI compilers and runtime called PGI Compiler-Assisted Software Testing or PCAST.
+The programmer adds PCAST runtime calls or directives to a working program to save a sequence of intermediate results to a reference file.
 The same runtime calls or directives in the updated or ported program will then compare the sequence of intermediate results to those in the reference file.
 
 Porting an application to an accelerator, like a GPU, has even more challenges for testing.
 With an accelerator, some (perhaps most) of the computations are done on a processor with a different instruction set, a different set of floating point units, and different numerical libraries.
 It's enough of a problem to test that a port of an application to a new processor is correct, or that enabling a new optimization still produces correct answers, but adding the complexity of using an accelerator for part of the computation exacerbates that even more.
-Here, we describe the \emph{OpenACC autocompare} feature of CAST for the special case of testing an OpenACC\cite{openacc.16} program that targets GPU parallel execution.
+Here, we describe the \emph{OpenACC autocompare} feature of PCAST for the special case of testing an OpenACC~\cite{openacc.16} program that targets GPU parallel execution.
 The goal is to determine just where the computation starts to go bad.
 A difference may be due to the same problems that arise when porting to any new processor, or changing optimizations, or running in parallel.
 However, the difference may also be due to the unique behavior of accelerated applications, such as stale data on the device because of missing data \emph{update} operations.
-Our CAST autocompare implementation executes the parallel kernels on the CPU as well as on the GPU in a single run, and then compares the two results.
+Our PCAST autocompare implementation executes the parallel kernels on the CPU as well as on the GPU in a single run, and then compares the two results.
 The user can set options such as floating point tolerances, choosing what to report, and how to proceed if there are differences.
 For instance, the user can choose to stop the program after $n$ differences or to replace the bad results with the known good values and continue.
 

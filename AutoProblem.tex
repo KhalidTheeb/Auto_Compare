@@ -2,7 +2,7 @@
 
 The general problem is to test whether changes to a numerical application generate different answers.
 Since these are typically floating point applications, the meaning of \emph{different} depends on the precision needed.
-Since all processors now use IEEE floating point arithmetic\cite{goldberg.cs.91}, many programmers expect that moving a program to another processor or changing optimiziations should produce exactly the same answer.
+Since all processors now use IEEE floating point arithmetic~\cite{goldberg.cs.91}, many programmers expect that moving a program to another processor or changing optimizations should produce exactly the same answer.
 Even with the same floating point representation, different compilers and libraries (even on the same processor) can give different results, for many well-known reasons, including:
 \begin{itemize}
 \item Different optimizations (changing a/5.0 into a*0.2), or

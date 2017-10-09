@@ -1,16 +1,17 @@
 \section{Conclusion}
 
-The OpenACC autocompare is similar in some respects to redundant execution strategies, which are typically used to detect failing hardware or erroneous software.
-The Tandem NonStop computers\cite{bartlett.tandem.86} implemented redundant execution on identical hardware with automatic checking; the system could detect faulty hardware and fail-over to another processor.
-The NASA Space Shuttle carried five computers\cite{fraser.astro.74}; four of these comprised the primary system and ran identical software with a voting protocol to detect a failing computer.
+The PCAST OpenACC autocompare feature is similar in some respects to redundant execution strategies, which are typically used to detect failing hardware or erroneous software.
+The Tandem NonStop computers~\cite{bartlett.tandem.86} implemented redundant execution on identical hardware with automatic checking; the system could detect faulty hardware and fail-over to another processor.
+The NASA Space Shuttle carried five computers~\cite{fraser.astro.74}; four of these comprised the primary system and ran identical software with a voting protocol to detect a failing computer.
 If the four primary system computers could not determine a correct result, the fifth backup system was enabled for ascent and landing.
 The major difference is the autocompare feature assumes that the CPU execution is correct, and it compares the GPU computations to those assumed correct results.
 
 We are considering future work on the autocompare feature, including:
 \begin{itemize}
-\item More ways to reduce the number of values being compared, to reduce the overhead.
-\item Ways to not require redundant execution of the whole program, but only the part being tested.
-\item Running the host code in parallel as well, for performance, though this could raise a number of other potential spurious differences.
+\item More ways to reduce the number of values being compared, to reduce the runtime cost.
+\item Running the compare itself in parallel, and perhaps running the compare code on the GPU itself.
+\item Some way to isolate regions of the program that are being tested, so as to not require redundant execution and data compares throughout the whole execution.
+\item Running the host code in parallel as well, for performance, though this could produce a number of other potential spurious differences.
 \item Optimizing the comparison operation.
 \item Adding support for arrays of structs or arrays of derived types, where each field would have a type-specific compare.
 \item Adding support for nested data structures, where a struct memory is a pointer to another array.
