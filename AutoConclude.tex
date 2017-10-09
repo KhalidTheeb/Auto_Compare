@@ -18,11 +18,11 @@ That work allows more fine grain control of which compute regions to compare, bu
 
 We are considering future work on the autocompare feature, including:
 \begin{itemize}
-\item More ways to reduce the number of values being compared, to reduce the runtime cost.
+\item Optimizing the comparison operation, since this seems to be the bottleneck for the autocompare feature.
+\item Ways to reduce the number of values being compared, to reduce the runtime cost.
 \item Running the compare itself in parallel, and perhaps running the compare code on the GPU itself.
 \item Some way to isolate regions of the program that are being tested, so as to not require redundant execution and data compares throughout the whole execution.
-\item Running the host code in parallel as well, for performance, though this could produce a number of other potential spurious differences.
-\item Optimizing the comparison operation.
+\item Running the host code in parallel as well, for performance, though this assumes that host parallel execution is as accurate and precise as the sequential execution.
 \item Adding support for arrays of structs or arrays of derived types, where each field would have a type-specific compare.
 \item Adding support for nested data structures, where a struct memory is a pointer to another array.
 The compare function would recurse to compare the nested structure as well.

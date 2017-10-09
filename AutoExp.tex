@@ -4,9 +4,12 @@ We have measured the overhead of the PCAST OpenACC autocompare implementation to
 We used three of the SPEC ACCEL v1.2 benchmarks, using the \emph{test} dataset.
 In each case, the program has an outer time step loop containing the main computation.
 The times shown are in seconds, and these are officially SPEC \emph{estimates}, since they were not run in the SPEC harness.
-The host machine was a 6-core Intel Haswell (core i7-5820K) with a 3.30GHz clock, with an NVIDIA Tesla Kepler K40c GPU.
+%The host machine was a 6-core Intel Haswell (core i7-5820K) with a 3.30GHz clock, with an NVIDIA Tesla Kepler K40c GPU.
+The host machine was a dual socket 16-core Intel Haswell (E5-2698 Xeon, 32-cores total) with a 2.30GHz clock, with an NVIDIA Tesla Pascal P100 GPU.
 We used the default autocompare options, but set a relative tolerance.
-The values shown in Table~\ref{res1} and Figure~\ref{fig:sle_figure} are:
+The execution times are in seconds, measured with /usr/bin/time.
+%The values shown in Table~\ref{res1} and Figure~\ref{fig:sle_figure} are:
+The values shown in Table~\ref{res1} are:
 \begin{itemize}
 \item Time (seconds) to run the test data set sequentially on the CPU.
 \item Time (seconds) to run the test data set in parallel on the GPU.
@@ -14,16 +17,28 @@ The values shown in Table~\ref{res1} and Figure~\ref{fig:sle_figure} are:
 \item Time (seconds) to run the test data set redundantly on both CPU and GPU using the autocompare feature.
 \item Number of variables or arrays compared.
 \item Number of data values compared.
+\item Number of variables or arrays that had some differences.
+\item Number of data values that were different.
 \end{itemize}
 
-
-\begin{figure*}[t]
-    \centering
-    \includegraphics [width=1\linewidth] {Table1.pdf}
-    \caption{Results showing overhead of OpenACC autocompare.}
-    \label{fig:sle_figure}
-\end{figure*}
-
+%\begin{table}
+%\begin{center}
+%\begin{tabular}{rrrrl}
+%\hline
+%303.ostencil & 304.olbm & 363.swim & \\
+%\hline
+% 3.01s &  1.61s & 0.33s & CPU time (sequential) \\
+% 1.61s &  1.85s & 0.78s & GPU time \\
+% 3.48s &  2.00s & 0.81s & redundant execution on CPU and GPU \\
+%41.46s & 29.05s & 1.53s & autocompare time \\
+%202 & 61 & 258 & variables and arrays compared \\
+%3,388,997,632 & 1,586,800,000 & 67,897,602 & values compared \\
+%\hline
+%\end{tabular}
+%\end{center}
+%\caption{Results showing overhead of OpenACC autocompare.}
+%\label{res1}
+%\end{table}
 
 \begin{table}
 \begin{center}
@@ -31,18 +46,43 @@ The values shown in Table~\ref{res1} and Figure~\ref{fig:sle_figure} are:
 \hline
 303.ostencil & 304.olbm & 363.swim & \\
 \hline
- 3.01s &  1.61s & 0.33s & CPU time (sequential) \\
- 1.61s &  1.85s & 0.78s & GPU time \\
- 3.48s &  2.00s & 0.81s & redundant execution on CPU and GPU \\
-41.46s & 29.05s & 1.53s & autocompare time \\
-202 & 61 & 258 & variables and arrays compared \\
+ 3.91s &  2.44s & 0.64s & CPU time (sequential) \\
+ 3.25s &  1.54s & 1.13s & GPU time \\
+ 4.34s &  3.20s & 1.15s & redundant execution on CPU and GPU \\
+17.58s & 22.32s & 2.06s & autocompare time \\
+   202 &     61 &   259 & variables and arrays compared \\
 3,388,997,632 & 1,586,800,000 & 67,897,602 & values compared \\
+   0   &     59 &   259 & variables and arrays with differences \\
+            0 &   520,634,266 & 22,336,658 & differences tolerated \\
 \hline
 \end{tabular}
 \end{center}
-\caption{Results showing overhead of OpenACC autocompare.}
+\caption{Results showing overhead of the PCAST OpenACC autocompare feature.}
 \label{res1}
 \end{table}
+
+Figure~\ref{fig:sle_figure} breaks down the time spent in the autocompare run into:
+\begin{itemize}
+\item Compute Time: the max of the CPU time and GPU time from Table~\ref{res1}.
+\item Redundancy Overhead: the difference between the redundant execution time from Table~\ref{res1} and Compute Time.
+\item Download Time: the time spent downloading data as measured using nvprof.
+\item Compare Time: the difference between autocompare time and the sum of the previous three times.
+\end{itemize}
+
+%\begin{figure*}[t]
+%    \centering
+%    \includegraphics [width=1\linewidth] {Table1.pdf}
+%    \caption{Results showing overhead of the PCAST OpenACC autocompare feature.}
+%    \label{fig:sle_figure}
+%\end{figure*}
+
+\begin{figure*}[t]
+    \centering
+    \includegraphics [width=1\linewidth] {npic2.pdf}
+    \caption{Results showing overhead of the PCAST OpenACC autocompare feature.}
+    \label{fig:sle_figure}
+\end{figure*}
+
 
 The two costs of the autocompare feature are running the compute region on both CPU and GPU, and downloading and comparing the values.
 The cost of redundant execution is less than the sum of the CPU and GPU times, because the GPU code executes asynchronously while the CPU executes the corresponding code.
@@ -51,5 +91,6 @@ The cost of doing the many floating point comparisons is significant, and seems 
 However, using this feature to find where a GPU computation diverges moves the cost from the programmer to the computer, so it could be invaluable regardless of the overhead.
 
 One side note: the \emph{test} datasets used here are relatively small.
-Even so, we had to set the relative tolerance to avoid the comparisons detecting differences due to different summation accumulation order.
-In fact, there were so many tolerated floating-point differences, that we do not consider the idea to compute and compare checksums first, since the checksums would most often be different even though the actual differences would then be tolerated.
+Even so, we had to set the relative tolerance to avoid the comparisons detecting differences, mostly due to different summation accumulation order.
+Surprisingly, those differences propagated to about $\frac{1}{3}$ of the results in two of the three benchmarks that we show here.
+This seems to imply that the cost of computing and comparing a quick checksum or signature before downloading and comparing all the data would frequently have little or no benefit.
