@@ -150,7 +150,7 @@ Ideally, this code could be parallelized as well.
 The biggest difference between parallelized and unparallelized code has to do with different order of reduction operations.
 \item This implementation requires separate memories for the accelerator device.
 Some accelerators share memory with the CPU, and NVIDIA GPUs in particular are moving in that direction.
-Supporting an autocompare feature with shared memory would require identifying:
+Supporting an autocompare feature with shared memory would require:
 \begin{itemize}
 \item Identifying all data that might be modified in the compute region, including global data.
 \item Saving the original values of data that might be modified.
@@ -164,7 +164,7 @@ The first step is critical and must be conservative.
 If the first target modifies some data and it is not restored before the second target executes, the second target is starting with bad data and could give bad results.
 Unfortunately, the first step is also extremely difficult in general, and beyond the capability of a commercial product compiler.
 Because of this, doing an autocompare implementation between a sequential and parallel execution of the same compute region on the same processor is difficult.
-The normal PCAST feature case be used to handle such a problem.
+The normal PCAST feature can be used to handle such a problem.
 \item The autocompare feature may find where the GPU computes a different value, but it doesn't identify or isolate why the value is different.
 The user would like to know, for instance, whether the GPU is using a different implementation of an math routine, or if the compiler applied some optimization to one target and not the other.
 In particular, the user would like to know if there are program changes or command-line options to select to force the results to be the same.
