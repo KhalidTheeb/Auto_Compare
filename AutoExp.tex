@@ -11,10 +11,11 @@ The execution times are in seconds, measured with /usr/bin/time.
 %The values shown in Table~\ref{res1} and Figure~\ref{fig:sle_figure} are:
 The values shown in Table~\ref{res1} are:
 \begin{itemize}
-\item Time (seconds) to run the test data set sequentially on the CPU.
-\item Time (seconds) to run the test data set in parallel on the GPU.
-\item Time (seconds) to run the test data set redundantly on both CPU and GPU without the autocompare feature enabled.
-\item Time (seconds) to run the test data set redundantly on both CPU and GPU using the autocompare feature.
+\item Time to run the test data set sequentially on the CPU.
+\item Time to run the test data set in parallel on the GPU.
+\item Time to run the test data set redundantly on both CPU and GPU without the autocompare feature enabled.
+\item Time to copy the data from GPU to CPU before comparing, measured by nvprof.
+\item Time to run the test data set redundantly on both CPU and GPU using the autocompare feature.
 \item Number of variables or arrays compared.
 \item Number of data values compared.
 \item Number of variables or arrays that had some differences.
@@ -25,12 +26,13 @@ The values shown in Table~\ref{res1} are:
 %\begin{center}
 %\begin{tabular}{rrrrl}
 %\hline
-%303.ostencil & 304.olbm & 363.swim & \\
+% 303.ostencil & 304.olbm & 363.swim & \\
 %\hline
-% 3.01s &  1.61s & 0.33s & CPU time (sequential) \\
-% 1.61s &  1.85s & 0.78s & GPU time \\
-% 3.48s &  2.00s & 0.81s & redundant execution on CPU and GPU \\
-%41.46s & 29.05s & 1.53s & autocompare time \\
+% 3.40s &  3.27s & 1.80s & CPU time (sequential) \\
+% 3.27s &  2.79s & 1.72s & GPU time \\
+% 8.80s &  3.97s & 1.88s & redundant execution on CPU and GPU \\
+% 1.80s &  1.69s & 0.09s & CPU to GPU data copy time \\
+%64.38s & 23.95s & 2.80s & autocompare time \\
 %202 & 61 & 258 & variables and arrays compared \\
 %3,388,997,632 & 1,586,800,000 & 67,897,602 & values compared \\
 %\hline
@@ -46,9 +48,10 @@ The values shown in Table~\ref{res1} are:
 \hline
 303.ostencil & 304.olbm & 363.swim & \\
 \hline
- 3.91s &  2.44s & 0.64s & CPU time (sequential) \\
+ 3.40s &  2.44s & 1.64s & CPU time (sequential) \\
  3.25s &  1.54s & 1.13s & GPU time \\
  4.34s &  3.20s & 1.15s & redundant execution on CPU and GPU \\
+ 1.14s &  0.96s & 0.04s & CPU to GPU data copy time \\
 17.58s & 22.32s & 2.06s & autocompare time \\
    202 &     61 &   259 & variables and arrays compared \\
 3,388,997,632 & 1,586,800,000 & 67,897,602 & values compared \\
@@ -66,7 +69,7 @@ Figure~\ref{fig:sle_figure} breaks down the time spent in the autocompare run in
 \item Compute Time: the max of the CPU time and GPU time from Table~\ref{res1}.
 \item Redundancy Overhead: the difference between the redundant execution time from Table~\ref{res1} and Compute Time.
 \item Download Time: the time spent downloading data as measured using nvprof.
-\item Compare Time: the difference between autocompare time and the sum of the previous three times.
+\item Compare Time: the difference between autocompare time from Table~\ref{res1} and the sum of the above three times.
 \end{itemize}
 
 %\begin{figure*}[t]
