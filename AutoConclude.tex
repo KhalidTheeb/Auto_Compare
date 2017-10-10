@@ -1,4 +1,5 @@
-\section{Conclusion}
+\section{Related Work}
+
 
 The PCAST OpenACC autocompare feature is similar in some respects to redundant execution strategies, which are typically used to detect failing hardware or erroneous software.
 The Tandem NonStop computers~\cite{bartlett.tandem.86} implemented redundant execution on identical hardware with automatic checking; the system could detect faulty hardware and fail-over to another processor.
@@ -15,6 +16,8 @@ One of these strategies is a mechanism very like the PCAST autocompare feature, 
 The user selects specific compute regions to verify, and the rest of the program is executed sequentially by the host CPU, including other compute regions.
 All the data is copied from the system memory to the GPU before those selected kernels, and all modified data is copied back and compared afterward.
 That work allows more fine grain control of which compute regions to compare, but does not allow for a unified framework to run the whole program and compare data after each compute region.
+
+\section{Future Work}
 
 We are considering future work on the autocompare feature, including:
 \begin{itemize}
