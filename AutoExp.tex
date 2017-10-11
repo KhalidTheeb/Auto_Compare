@@ -96,4 +96,4 @@ However, using this feature to find where a GPU computation diverges moves the c
 One side note: the \emph{test} datasets used here are relatively small.
 Even so, we had to set the relative tolerance to avoid the comparisons detecting differences, mostly due to different summation accumulation order.
 Surprisingly, those differences propagated to about $\frac{1}{3}$ of the results in two of the three benchmarks that we show here.
-This seems to imply that the cost of computing and comparing a quick checksum or signature before downloading and comparing all the data would frequently have little or no benefit.
+This implies that the naive approach to reduce the number of values being compared and therefore reducing the runtime cost by computing and comparing a quick checksum or signature before downloading and comparing all the data would frequently have little or no benefit.
