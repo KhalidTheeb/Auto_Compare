@@ -30,7 +30,7 @@ Since the data is already being copied to the host, the only overhead is the act
 This method would be even less precise about identifying where the divergent computations occurred.
 
 \item Finally, the runtime could leave the choice to the user.
-This would be to allow the user the insert a runtime call or a directive to tell the runtime when to compare data, and what data to compare.
+This would allow the user to insert a runtime call or a directive that tells the runtime when to compare data, and what data to compare.
 We considered two options: one where the user chose one or more variables or arrays to compare, and a second where the user asks the runtime to compare all variables and arrays present in device memory to the corresponding host memory locations.
 \end{enumerate}
 
