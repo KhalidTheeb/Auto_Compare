@@ -12,7 +12,7 @@ The programmer can also add breakpoints and have the debugger compare specific v
 This is perhaps the most aggressive approach to allow value comparisons between two running executions and allows a user to inspect the program when the values diverge, although the comparisons themselves are not performed automatically.
 
 Research using the OpenARC compiler framework~\cite{lee.hpdc.14} has explored several strategies for debugging OpenACC programs~\cite{lee.ipdps.14}.
-One of these strategies is a mechanism very like the PCAST autocompare feature, where the compiler generates device code and host sequential code for specific compute regions.
+One of these strategies is a mechanism very much like the PCAST autocompare feature, where the compiler generates device code and host sequential code for specific compute regions.
 The user selects specific compute regions to verify, and the rest of the program is executed sequentially by the host CPU, including other compute regions.
 All the data is copied from the system memory to the GPU before those selected kernels, and all modified data is copied back and compared afterward.
 That work allows more fine grain control of which compute regions to compare, but does not allow for a unified framework to run the whole program and compare data after each compute region.
