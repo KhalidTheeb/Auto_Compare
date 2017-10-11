@@ -167,7 +167,7 @@ Because of this, doing an autocompare implementation between a sequential and pa
 The normal PCAST feature can be used to handle such a problem.
 \item The autocompare feature may find where the GPU computes a different value, but it doesn't identify or isolate why the value is different.
 The user would like to know, for instance, whether the GPU is using a different implementation of an math routine, or if the compiler applied some optimization to one target and not the other.
-In particular, the user would like to know if there are program changes or command-line options to select to force the results to be the same.
+In particular, the user would like to know if there are program changes or command-line options to select or force the results to be the same.
 Currently, we have no solution for these questions.
 \item Our current implementation handles variables and arrays of basic data types (integer, floating point, complex), but not C++ structs or Fortran derived types; this is left for future work.
 \end{itemize}
