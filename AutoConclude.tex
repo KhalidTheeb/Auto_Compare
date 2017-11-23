@@ -30,3 +30,9 @@ We are considering future work on the autocompare feature, including:
 \item Adding support for nested data structures, where a struct memory is a pointer to another array.
 The compare function would recurse to compare the nested structure as well.
 \end{itemize}
+
+\section{Conclusion}
+
+Directive based GPU programming models improve the productivity of GPU programming however they do not ensure correctness or the absence of logical errors. These programming models usually consist of several compiler optimizations and transformations that are hidden from the programmer which improves productivity but unfortunately comes with the cost of greater challenges for users to debug and verify the program correctness. This work which is part of the PCAST tool can automatically detect numerical differences that might occur due to computational differences on different OpenACC devices. Hence, PCAST can automatically check the correctness of an OpenACC implementation and it can also help to identify bugs in OpenACC data management and computation and supports programmers in the development of OpenACC applications.
+
+In addition, the overhead incurred due to the redundant execution for programs is dominated by the slower execution unit. But, debuggers and correctness checkers always introduce some overhead, which is in most cases still a lot faster than manual investigation.
