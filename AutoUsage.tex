@@ -1,7 +1,15 @@
 \section{Autocompare with OpenACC}
 
 The PCAST OpenACC autocompare feature works by executing each OpenACC compute kernel on both the GPU and the host CPU.
-This keeps the values in system memory in sync with the values in GPU device memory, assuming the same computation is done correctly on each.
+This keeps the values in system memory in sync with the values in GPU device memory, assuming the same computation is done correctly on each. Figure 1 illustrates the flow of regular OpenACC program with and without turning on the PCAST autocomapre option. The computationally intensive part of the illustration can consist of more than one single kernel.
+
+\begin{figure*}[t]
+    \centering
+    \includegraphics [width=1\linewidth] {flow_chart.pdf}
+    \caption{An overview of the autocompare functionality.}
+    \label{fig:cfg_figure}
+\end{figure*}
+
 
 The next, equally important step is to compare the computed values on the CPU with those on the GPU.
 We assume that the CPU values are the reference values, and the GPU values are the ones being tested.
