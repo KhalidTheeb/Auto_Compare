@@ -1,7 +1,7 @@
 \section{Experiments}
 
 We have measured the overhead of the PCAST OpenACC autocompare implementation to demonstrate its usability.
-We used three of the SPEC ACCEL v1.2 benchmarks, using the \emph{test} dataset.
+We used ten of the SPEC ACCEL v1.2 benchmarks, using the \emph{test} dataset.
 In each case, the program has an outer time step loop containing the main computation.
 The times shown are in seconds, and these are officially SPEC \emph{estimates}, since they were not run in the SPEC harness.
 %The host machine was a 6-core Intel Haswell (core i7-5820K) with a 3.30GHz clock, with an NVIDIA Tesla Kepler K40c GPU.
@@ -16,11 +16,8 @@ The values shown in Table~\ref{res1} are:
 \item Time to run the test data set redundantly on both CPU and GPU without the autocompare feature enabled.
 \item Time to copy the data from GPU to CPU before comparing, measured by nvprof.
 \item Time to run the test data set redundantly on both CPU and GPU using the autocompare feature.
-\item Number of variables or arrays compared.
-\item Number of data values compared.
-\item Number of variables or arrays that had some differences.
-\item Number of data values that were different.
 \end{itemize}
+
 
 %\begin{table}
 %\begin{center}
@@ -76,6 +73,14 @@ bt        & 5.92 & 1.27 & 7.27 & 9.13 & 119.28\\
 \end{table}
 
 
+In Table~\ref{res2} 
+We show some statistics about the benchmarks we used, such as:
+\begin{itemize}
+\item Number of variables or arrays compared.
+\item Number of data values compared.
+\item Number of variables or arrays that had some differences.
+\item Number of data values that were different.
+\end{itemize}
 
 
 
@@ -139,13 +144,20 @@ Figure~\ref{fig:sle_figure} breaks down the time spent in the autocompare run in
 \end{figure*}
 
 
-The two costs of the autocompare feature are running the compute region on both CPU and GPU, and downloading and comparing the values.
+The costs of the autocompare feature are running the compute region on both CPU and GPU, and downloading and comparing the values.
 The cost of redundant execution is less than the sum of the CPU and GPU times, because the GPU code executes asynchronously while the CPU executes the corresponding code.
 Since this is a feature used during code development and debugging, we consider this to be relatively low overhead.
 The cost of doing the many floating point comparisons is significant, and seems directly related to the number of data items compared, and unrelated to the number of arrays or variables being compared.
-However, using this feature to find where a GPU computation diverges moves the cost from the programmer to the computer, so it could be invaluable regardless of the overhead.
+However, using this feature to find where a GPU computation diverges moves the cost from the programmer to the computer, so it could be invaluable regardless of the overhead. An interesting observation we came across was that on all benchmarks we used it roughly took one second to compare a gigabyte of data as can be seen in figure ~\ref{fig:gbps_figure}, which can be used as a rough estimate of how long it will take to test a code for correctness as long as the user knows the size of the data set being used.
+
+\begin{figure*}[t]
+    \centering
+    \includegraphics [width=1\linewidth] {GBperSec.pdf}
+    \caption{Results showing amount of data the autocompare feature process per unit time.}
+    \label{fig:gbps_figure}
+\end{figure*}
 
 One side note: the \emph{test} datasets used here are relatively small.
 Even so, we had to set the relative tolerance to avoid the comparisons detecting differences, mostly due to different summation accumulation order.
-Surprisingly, those differences propagated to about $\frac{1}{3}$ of the results in two of the three benchmarks that we show here.
+Surprisingly, those differences propagated to about $\frac{1}{3}$ of the results in two of the ten benchmarks that we show here.
 This seems to imply that the cost of computing and comparing a quick checksum or signature before downloading and comparing all the data would frequently have little or no benefit.
