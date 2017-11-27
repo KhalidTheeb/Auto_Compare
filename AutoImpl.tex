@@ -147,7 +147,7 @@ Some of the disadvantages are:
 \begin{itemize}
 \item The CPU code is run sequentially on a single core.
 Ideally, this code could be parallelized as well.
-The biggest difference between parallelized and unparallelized code has to do with different order of reduction operations.
+The biggest difference between parallelized and unparallelized code has to do with different order of reduction operations, which will produce different results that might not be within the acceptable tolerance specified by the application developer.
 \item This implementation requires separate memories for the accelerator device.
 Some accelerators share memory with the CPU, and NVIDIA GPUs in particular are moving in that direction.
 Supporting an autocompare feature with shared memory would require:
