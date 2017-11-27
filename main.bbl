@@ -1,0 +1,65 @@
+\begin{thebibliography}{10}
+
+\bibitem{goldberg.cs.91}
+Goldberg, D.:
+\newblock {What Every Computer Scientist Should Know About Floating-Point
+  Arithmetic}.
+\newblock ACM Computing Surveys \textbf{23}(1) (March 1991)  5--47
+
+\bibitem{hovy.iwsehpc.16}
+Hovy, C., Kunkel, J.:
+\newblock Towards automatic and flexible unit test generation for legacy hpc
+  code.
+\newblock In: Fourth International Workshop on Software Engineering for High
+  Performance Computing in Computational Science and Engineering, Salt Lake
+  City (November 2016)
+
+\bibitem{wolfe.ashes.17}
+Wolfe, M., Lee, S., Kim, J., Tian, X., Xu, R., Chandrasekaran, S., Chapman, B.:
+\newblock {Implementing the {OpenACC} Data Model}.
+\newblock In: Parallel and Distributed Processing Symposium Workshops, Lake
+  Buena Vista, Fla. (May 2017)  662--672
+
+\bibitem{openacc.16}
+:
+\newblock {The OpenACC Application Programming Interface, Version 2.5}. (2016)
+  \url{https://www.openacc.org/sites/default/files/inline-files/OpenACC\_2pt5.pdf}.
+
+\bibitem{fraser.astro.74}
+Fraser, D.C., Felleman, P.G.:
+\newblock {Digital Fly-by-Wire Computers Lead the Way}.
+\newblock Astronautics and Aeronautics \textbf{12} (July 1974)  24--32
+
+\bibitem{bartlett.tandem.86}
+Bartlett, J., Gray, J., Horst, B.:
+\newblock {Fault Tolerance in Tandem Computer Systems}.
+\newblock Technical Report 86.2, Tandem Computers, Cal. (March 1986)
+
+\bibitem{ahmad.submitted.17}
+Admad, K., Wolfe, M.:
+\newblock {Compiler Support for Testing Numerical {HPC} Applications}.
+\newblock In: Computational Reproducibility at Exascale. (submitted for
+  publication)
+
+\bibitem{lee.ipdps.14}
+Lee, S., Le, D., Vetter, J.S.:
+\newblock {Interactive Programming Debugging and Optimization for
+  Directive-Based, Efficient {GPU} Computing}.
+\newblock In: Proceedings of the 28th International Parallel and Distributed
+  Processing Symposium. (May 2014)
+
+\bibitem{lee.hpdc.14}
+Lee, S., Vetter, J.S.:
+\newblock {{OpenARC:} Open Accelerator Research Compiler for Directive-based,
+  Efficient Heterogeneous Computing}.
+\newblock In: Proceedings of the 23rd International Symposium on
+  High-performance Parallel and Distributed Computing. (June 2014)  115--120
+
+\bibitem{derose.sc.15}
+DeRose, L., Gontarek, A., Vose, A., Moench, R., Abramson, D., Dinh, M.N., Jin,
+  C.:
+\newblock Relative debugging for a highly parallel hybrid computer system.
+\newblock In: SC'15: Proceedings of the International Conference for High
+  Performance Computing, Networking, Storage and Analysis. (November 2015)
+
+\end{thebibliography}
