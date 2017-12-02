@@ -4,8 +4,8 @@ Porting an application to another processor, or adding parallel algorithms, or e
 The goal may be to get higher performance, but the programmer must also test that the computed answers are still accurate.
 While essentially all processors use the same IEEE floating point representation, not all will support the same features, such as FMA (fused multiple-add) operations.
 Different processors, different algorithms, different programs implementing the same algorithm, or different compiler optimizations on the same program can generate a different sequence of operations, producing different floating point roundoff behavior.
-To validate an updated program may require identifying at which point in the program the results start to diverge, and then determining if the divergence is significant.
-We have developed a feature in the PGI compilers and runtime called PGI Compiler-Assisted Software Testing or PCAST.
+To validate an updated program may require identifying at which point in the program the results start to diverge and determining if the divergence is significant.
+We are developing a feature in the PGI compilers and runtime called PGI Compiler-Assisted Software Testing or PCAST.
 The programmer adds PCAST runtime calls or directives to a working program to save a sequence of intermediate results to a reference file.
 The same runtime calls or directives in the updated or ported program will then compare the sequence of intermediate results to those in the reference file.
 
@@ -16,17 +16,18 @@ Here, we describe the \emph{OpenACC autocompare} feature of PCAST for the specia
 The goal is to determine just where the computation starts to go bad.
 A difference may be due to the same problems that arise when porting to any new processor, or changing optimizations, or running in parallel.
 However, the difference may also be due to the unique behavior of accelerated applications, such as stale data on the device because of missing data \emph{update} operations.
+
 Our PCAST autocompare implementation executes the parallel kernels on the CPU as well as on the GPU in a single run, and then compares the two results.
 The user can set options such as floating point tolerances, choosing what to report, and how to proceed if there are differences.
 For instance, the user can choose to stop the program after $n$ differences or to replace the bad results with the known good values and continue.
 
-The next section describes some of the problems that arise when porting or optimizing an application, the specific problems of testing application ports to a GPU, and the usage cases that the OpenACC autocompare features is intended to support.
+The next section describes some of the problems that arise when porting or optimizing an application, the specific problems of testing application ports to a GPU, and the usage cases that the OpenACC autocompare feature is intended to support.
 Section 3 describes the OpenACC autocompare feature in more detail, including how to use it and other details.
 Section 4 gives some details of the implementation.
 Section 5 gives measurements of the overhead of the autocompare feature.
 Section 6 describes related work. 
 Section 7 describes work in progress, and 
-the final section summarizes the motivation behind the autocomapre feature.
+the final section summarizes the motivation behind the autocompare feature.
 
 
 

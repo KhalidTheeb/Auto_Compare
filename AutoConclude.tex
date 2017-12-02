@@ -8,11 +8,11 @@ If the four primary system computers could not determine a correct result, the f
 The major difference is the autocompare feature assumes that the CPU execution is correct, and it compares the GPU computations to those assumed correct results.
 
 The Cray Comparative Debugger (CCDB)~\cite{derose.sc.15} allows a programmer to launch two versions of a program, such as a CPU-only version and a GPU-accelerated version, and to inspect and compare values between the two versions.
-The programmer can also add breakpoints and have the debugger compare specific values between the two program versions when the two versions reach the breakpoint.
+The programmer can also add breakpoints and have the debugger compare specific values between the two program versions when each reaches the breakpoint.
 This is perhaps the most aggressive approach to allow value comparisons between two running executions and allows a user to inspect the program when the values diverge, although the comparisons themselves are not performed automatically.
 
 Research using the OpenARC compiler framework~\cite{lee.hpdc.14} has explored several strategies for debugging OpenACC programs~\cite{lee.ipdps.14}.
-One of these strategies is a mechanism very much like the PCAST autocompare feature, where the compiler generates device code and host sequential code for specific compute regions.
+One mechanism is very much like the PCAST autocompare feature, where the compiler generates device code and host sequential code for specific compute regions.
 The user selects specific compute regions to verify, and the rest of the program is executed sequentially by the host CPU, including other compute regions.
 All the data is copied from the system memory to the GPU before those selected kernels, and all modified data is copied back and compared afterward.
 That work allows more fine grain control of which compute regions to compare, but does not allow for a unified framework to run the whole program and compare data after each compute region.
@@ -25,7 +25,7 @@ We are considering future work on the autocompare feature, including:
 \item Ways to reduce the number of values being compared, to reduce the runtime cost.
 \item Running the compare itself in parallel, and perhaps running the compare code on the GPU itself.
 \item Some way to isolate regions of the program that are being tested, so as to not require redundant execution and data compares throughout the whole execution.
-\item Running the host code in parallel as well, for performance, though this assumes that host parallel execution is as accurate and precise as the sequential execution.
+\item Running the host code in parallel as well, for performance, though this assumes that host parallel execution is as accurate and precise as the host sequential execution.
 \item Adding support for arrays of structs or arrays of derived types, where each field would have a type-specific compare.
 \item Adding support for nested data structures, where a struct memory is a pointer to another array.
 The compare function would recurse to compare the nested structure as well.
@@ -33,6 +33,11 @@ The compare function would recurse to compare the nested structure as well.
 
 \section{Conclusion}
 
-Directive based GPU programming models improve the productivity of GPU programming however they do not ensure correctness or the absence of logical errors. These programming models usually consist of several compiler optimizations and transformations that are hidden from the programmer which improves productivity but unfortunately comes with the cost of greater challenges for users to debug and verify the program correctness. This work which is part of the PCAST tool can automatically detect numerical differences that might occur due to computational differences on different OpenACC devices. Hence, PCAST can automatically check the correctness of an OpenACC implementation and it can also help to identify bugs in OpenACC data management and computation and supports programmers in the development of OpenACC applications.
+While directive based GPU programming models improve the productivity of GPU programming, they do not ensure correctness or the absence of logical errors.
+These programming models usually consist of several compiler optimizations and transformations that are hidden from the programmer.
+These models improve productivity but unfortunately present challenges to users who must debug and verify program correctness.
+This work, part of the PCAST feature, can automatically detect numerical differences that can occur due to computational differences on different OpenACC devices.
+Hence, PCAST can automatically check the correctness of an OpenACC implementation and it can also help to identify bugs in OpenACC data management and computation and support programmers in the development of OpenACC applications.
 
-In addition, the overhead incurred due to the redundant execution for programs is dominated by the slower execution unit. But, debuggers and correctness checkers always introduce some overhead, which is in most cases still a lot faster than manual investigation.
+The overhead incurred due to redundant execution is dominated by the slower execution unit and is relatively small, while the overhead of the compare operation is significant.
+However, automatic debuggers and correctness checkers always introduce some overhead, and in most cases the total cost is much less than manual investigation.

@@ -23,5 +23,6 @@ The specific problem addressed here is to test whether porting a numerical appli
 When debugging OpenACC programs targeting GPUs, we have additional problems as well as an important advantage.
 The problems include using two different processors in the same application, and managing data traffic and coherence between the system memory and the GPU device memory.
 The important advantage is that we have two processors, so we can create the reference values on the CPU while the GPU is executing, and we have separate memories for the CPU and GPU, so we have a place to store the reference values and the test values.
-Many of the problems that arise when programming GPUs with OpenACC have to do with managing the separate memories (stale data on the GPU or the CPU), or dealing with all the problems of porting to a new processor with part of the program still running on the old processor.
+
+%Many of the problems that arise when programming GPUs with OpenACC have to do with managing the separate memories (stale data on the GPU or the CPU), or dealing with all the problems of porting to a new processor with part of the program still running on the old processor.
 

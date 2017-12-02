@@ -1,7 +1,7 @@
 \section{Autocompare with OpenACC}
 
 The PCAST OpenACC autocompare feature works by executing each OpenACC compute kernel on both the GPU and the host CPU.
-This keeps the values in system memory in sync with the values in GPU device memory, assuming the same computation is done correctly on each. Figure 1 illustrates the flow of regular OpenACC program with and without turning on the PCAST autocomapre option. The computationally intensive part of the illustration can consist of more than one single kernel.
+This keeps the values in system memory in sync with the values in GPU device memory, assuming the same computation is done correctly on each. Figure 1 illustrates the flow of regular OpenACC program with and without turning on the PCAST autocompare option. The computationally intensive part of the illustration can consist of more than one single kernel.
 
 \begin{figure*}[t]
     \centering
@@ -46,7 +46,7 @@ In all cases, since the same computations are done on the CPU as well as the GPU
 This means \emph{update host} directives and \emph{copyout} actions from data directives should not update the host values.
 
 There are errors that the PCAST OpenACC autocompare feature can not detect.
-In particular, since the compare point requires synchronization with the device, any errors due to misplaced or erroneous \emph{async} clauses, or missing \emph{wait} directives or clauses will be hidden.
+In particular, since the compare point requires synchronization with the device, any errors due to misplaced or erroneous \emph{async} clauses, or missing \emph{wait} directives or clauses may be hidden.
 Also, OpenACC has features that allow different computations on the host as on the device, to allow for different algorithmic formulations that are more appropriate for each processor.
 Such a feature can allow for programming mistakes that are hard to detect.
 Again, the goal is to detect numeric computational differences between two executions, not to find all errors.
