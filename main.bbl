@@ -62,4 +62,23 @@ DeRose, L., Gontarek, A., Vose, A., Moench, R., Abramson, D., Dinh, M.N., Jin,
 \newblock In: SC'15: Proceedings of the International Conference for High
   Performance Computing, Networking, Storage and Analysis. (November 2015)
 
+\bibitem{sato2015clock}
+Sato, K., Ahn, D.H., Laguna, I., Lee, G.L., Schulz, M.:
+\newblock Clock delta compression for scalable order-replay of
+  non-deterministic parallel applications.
+\newblock In: High Performance Computing, Networking, Storage and Analysis,
+  2015 SC-International Conference for, IEEE (2015)  1--12
+
+\bibitem{abramson1994relative}
+Abramson, D.A., Sosic?, R.:
+\newblock Relative Debugging: A new debugging paradigm.
+\newblock School of Computing and Information Technology, Faculty of Science
+  and Technology, Griffith University (1994)
+
+\bibitem{abramson1996relative}
+Abramson, D., Foster, I., Michalakes, J., Sosi{\v{c}}, R.:
+\newblock Relative debugging: A new methodology for debugging scientific
+  applications.
+\newblock Communications of the ACM \textbf{39}(11) (1996)  69--77
+
 \end{thebibliography}
