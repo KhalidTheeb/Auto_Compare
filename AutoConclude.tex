@@ -7,7 +7,7 @@ The NASA Space Shuttle carried five computers~\cite{fraser.astro.74}; four of th
 If the four primary system computers could not determine a correct result, the fifth backup system was enabled for ascent and landing.
 The major difference is the autocompare feature assumes that the CPU execution is correct, and it compares the GPU computations to those assumed correct results.
 
-The Cray Comparative Debugger (CCDB)~\cite{derose.sc.15} which is based on the relative debugging paradigm proposed by Abramson et al. in \cite{abramson1994relative}\cite{abramson1996relative} allows a programmer to launch two versions of a program, such as a CPU-only version and a GPU-accelerated version, and to inspect and compare values between the two versions.
+The Cray Comparative Debugger (CCDB)~\cite{derose.sc.15} which is based on the relative debugging paradigm proposed by Abramson et al. \cite{abramson1994relative}\cite{abramson1996relative} allows a programmer to launch two versions of a program, such as a CPU-only version and a GPU-accelerated version, and to inspect and compare values between the two versions.
 The programmer can also add breakpoints and have the debugger compare specific values between the two program versions when each reaches the breakpoint.
 This is perhaps the most aggressive approach to allow value comparisons between two running executions and allows a user to inspect the program when the values diverge, although the comparisons themselves are not performed automatically.
 
@@ -30,7 +30,7 @@ We are considering future work on the autocompare feature, including:
 \item Adding support for nested data structures, where a struct memory is a pointer to another array.
 The compare function would recurse to compare the nested structure as well.
 \item Similar to the idea of record and replay \cite{sato2015clock} we might add support to allow comparisons across runs of the same autocompare and observe if there are any differences between different runs. This reveals if the bug is reproducible or not, and could potentially help determine whether the problem is more than just a round off error. 
-\item Specifying an arbitrary numerical tolerance through the relative or the absolute tolerance environment variable options may result in missed bugs especially when the values are very small. Furthermore, some applications require bitwise equivalent which is a strong requirement and might not be possible especially in non-deterministic applications. A solution would be adding a third environment variable option to the tolerance options suite which would take into account the magnitude of the values and performs the comparisons in a normalized fashion. 
+\item Specifying an arbitrary numerical tolerance through the relative or the absolute tolerance environment variable options may result in missed bugs or spurious false bugs reported, especially when the values are very small. Furthermore, some applications require bitwise equivalent which is a strong requirement and might not be possible especially in non-deterministic applications. A solution would be adding a third environment variable option to the tolerance options suite which would take into account the magnitude of the values and perform the comparisons in a normalized fashion. 
 \end{itemize}
 
 \section{Conclusion}
