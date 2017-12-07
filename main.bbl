@@ -81,4 +81,14 @@ Abramson, D., Foster, I., Michalakes, J., Sosi{\v{c}}, R.:
   applications.
 \newblock Communications of the ACM \textbf{39}(11) (1996)  69--77
 
+\bibitem{jost2003relative}
+Jost, G., Hood, R.:
+\newblock Relative debugging of automatically parallelized programs.
+\newblock Automated Software Engineering \textbf{10}(1) (2003)  75--101
+
+\bibitem{matthews2003automatic}
+Matthews, G., Hood, R., Jin, H., Johnson, S., Ierotheou, C.,  et~al.:
+\newblock Automatic relative debugging of openmp programs.
+\newblock Proceedings of EWOMP, Aachen, Germany (2003)
+
 \end{thebibliography}
