@@ -88,7 +88,7 @@ Jost, G., Hood, R.:
 
 \bibitem{matthews2003automatic}
 Matthews, G., Hood, R., Jin, H., Johnson, S., Ierotheou, C.,  et~al.:
-\newblock Automatic relative debugging of openmp programs.
+\newblock Automatic relative debugging of {OpenMP} programs.
 \newblock Proceedings of EWOMP, Aachen, Germany (2003)
 
 \end{thebibliography}
