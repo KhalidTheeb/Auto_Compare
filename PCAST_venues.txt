@@ -1,0 +1,5 @@
+1) Mathew Flatt's phd student (medical dsl debugger) http://www.sleconf.org/2017/CFP.html
+
+2) Seyong Lee papers
+http://www.hpdc.org/2018/papers/call-for-papers/
+http://www.ipdps.org/ipdps2018/2018_call_for_papers.html
